@@ -2,7 +2,7 @@
 
 Date: 2026-10-18
 
-Status: reviewed source published; hosted cleanup correction and final convergence checks pending
+Status: reviewed source published; exact hosted closure recorded separately
 
 Contract: [../../AGENTS.md](../../AGENTS.md)
 
@@ -111,10 +111,27 @@ continue to run in both environments.
 Publish only the accepted source changes and synchronize the reviewed main
 branch. Preserve failed-run evidence and qualify omitted private-source checks.
 No live bench, serial, RF, relay, charging, signing, runtime activation or model
-promotion is authorized by these source results. No dependency installation or
-toolchain migration is included. A durable-record audit found this task's
+promotion is authorized by these source results. No existing environment update
+or toolchain migration is included. The bounded synthetic CI environment below
+is explicitly selected. A durable-record audit found this task's
 missing routing labels; this record supplies the actual boundaries rather than
 relaxing that audit.
 
 Handoff: none. The same coordinator completes publication and records final
 hosted outcomes in the separate private Git-convergence review repository.
+
+## Synthetic CI image-test environment
+
+The fourth hosted run passed the artifact audit, then failed because Pillow was
+not installed for the image fixtures. Independent source inspection established
+that these fixtures also require NumPy and OpenCV. Select an isolated temporary
+CPython 3.12 / Linux x86_64 environment with exact hashed Pillow 12.3.0,
+NumPy 2.3.4 and headless OpenCV 4.13.0.92 wheels. PyPI metadata and hashes were
+independently reviewed; no mandatory dependency is omitted. The existing local
+Pillow 12.2.0 was rejected for the new environment after current advisory
+metadata was checked. No existing environment is updated. A Pillow-only
+existing environment reproduced ten missing-OpenCV fixture errors and is not
+claimed to pass. Validate the selected three-package environment with pip check
+and all 43 synthetic fixtures before publication. Both hosted workflows prepare
+it only after scaffold audits; local QA uses a separately selected native
+temporary environment. These tests do not execute live bench actions.

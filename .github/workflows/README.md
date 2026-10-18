@@ -19,8 +19,23 @@
   browser QA, full scaffold-audit unittest discovery, scaffold verification,
   Python compilation, and host-side contract tests.
 - Current repository Pages settings use the GitHub Actions source for
-  `https://cyberpivots.github.io/ESP32/`; re-verify the Pages API and latest
+  `https://jakec-redlund.github.io/ESP32/`; re-verify the Pages API and latest
   workflow result after any repository, branch, workflow, permission, or Pages
   setting change.
 - The workflow intentionally does not publish the repository root or the
   working `docs/` tree.
+
+Public checkouts explicitly select standalone DOS-C parity scope. An absent
+private sibling is reported as not evaluated; local default audits and any
+explicit or available DOS-C source remain required and strict. Pages cannot
+establish the six private-source Win31 integration checks.
+
+The host-test steps use an isolated runner-temporary environment with the exact
+hashed Linux x86_64 / CPython 3.12 image-test artifacts in
+`../requirements-host-tests.txt`. Pillow, NumPy and headless OpenCV are needed by
+synthetic legibility fixtures. Installation occurs after scaffold audits, uses
+binary artifacts without dependency resolution, and does not update an existing
+environment. See the exact release metadata for
+[Pillow](https://pypi.org/pypi/Pillow/12.3.0/json),
+[NumPy](https://pypi.org/pypi/numpy/2.3.4/json) and
+[OpenCV headless](https://pypi.org/pypi/opencv-python-headless/4.13.0.92/json).

@@ -51,6 +51,14 @@ jobs:
           PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests/scaffold_audits -p 'test_*.py'
           python3 scripts/verify_scaffold.py
 
+      - name: Prepare synthetic image test dependencies
+        run: |
+          python3 -c 'import platform, sys; assert sys.version_info[:2] == (3, 12) and platform.system() == "Linux" and platform.machine() == "x86_64", "Host-test wheel lock requires CPython 3.12 / Linux x86_64"'
+          python3 -m venv "$RUNNER_TEMP/esp32-host-tests"
+          "$RUNNER_TEMP/esp32-host-tests/bin/python" -m pip install --disable-pip-version-check --no-input --index-url https://pypi.org/simple --only-binary=:all: --no-deps --require-hashes -r .github/requirements-host-tests.txt
+          "$RUNNER_TEMP/esp32-host-tests/bin/python" -m pip check
+          printf '%s\n' "$RUNNER_TEMP/esp32-host-tests/bin" >> "$GITHUB_PATH"
+
       - name: Run host-side contract tests
         env:
           RNW_DOSC_PARITY_SCOPE: standalone
