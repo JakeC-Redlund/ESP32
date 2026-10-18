@@ -13,6 +13,14 @@ Contract: [../../AGENTS.md](../../AGENTS.md)
   repository transfers, including ESP32 and the seven private hardware children.
 - Selected tier: Tier 2 source integration, with explicit user authorization for
   GitHub publication. Live hardware and physical acceptance remain separate.
+- Owner role: coordinator and Agent Operations; root serialized source writer,
+  with independent engineering and QA review.
+- Evidence need: exact source diffs, native recovery, focused checks and current
+  hosted commit, CI and branch identities.
+- Mutation boundary: the reviewed source/skills, seven child gitlinks, current
+  clone URLs, bounded browser cleanup and portable CI audit scope described here.
+- Unknowns: fresh hosted acceptance remains pending for the latest correction;
+  live hardware and physical acceptance have not been established by this work.
 - Root is the sole source/Git writer. Independent engineering, business/governance
   and installed-source QA readers supplied bounded review. Source-review weights:
   coordinator 5, each specialist 3; all four accepted the corrected bounded scope
@@ -78,3 +86,35 @@ endpoint/exited-launcher failure, refused endpoint and malformed identity.
 Actual full browser QA through a real shell launcher passed with zero new
 temporary profiles left behind. Both prior hosted failures remain recorded;
 fresh hosted acceptance is still required.
+
+The third hosted run passed browser QA, then exposed the RNW audit's hard-coded
+H: DOS-C path in a standalone Linux checkout. Resolve the default sibling from
+the actual ESP32 root. Local parity stays required by default; Pages explicitly
+selects standalone scope and reports DOS-C parity as not evaluated only when
+the implicit sibling is absent. An explicit DOSC_ROOT, available sibling, empty
+configuration or invalid scope cannot bypass source checks. Independent QA
+accepted this boundary before mutation. Regression fixtures cover missing,
+valid and invalid source trees plus configuration errors. Private sibling
+source is not copied into the public artifact or its workflow.
+
+The six Win31 generator integration tests also require DOS-C. In this same
+explicit standalone scope, they report not evaluated only for an absent implicit
+sibling. The generator remains strict; a missing explicit root or invalid
+available source still fails. Its default source locator follows the actual
+checkout's sibling. No TypeScript output is regenerated or fabricated. Pages
+does not establish these six XML/source/freshness integration checks; the local
+run with the real sibling establishes them separately. Other RNW host tests
+continue to run in both environments.
+
+## Decision and authority limits
+
+Publish only the accepted source changes and synchronize the reviewed main
+branch. Preserve failed-run evidence and qualify omitted private-source checks.
+No live bench, serial, RF, relay, charging, signing, runtime activation or model
+promotion is authorized by these source results. No dependency installation or
+toolchain migration is included. A durable-record audit found this task's
+missing routing labels; this record supplies the actual boundaries rather than
+relaxing that audit.
+
+Handoff: none. The same coordinator completes publication and records final
+hosted outcomes in the separate private Git-convergence review repository.

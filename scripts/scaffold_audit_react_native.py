@@ -274,7 +274,6 @@ SECRET_FIXTURE_RE = re.compile(
     r"messageBody|fileContent|preciseLocation)\b",
     re.IGNORECASE,
 )
-DOSC_ROOT = Path(os.environ.get("DOSC_ROOT", "/mnt/h/dos-c"))
 DOSC_RNW_SOURCE_MARKERS = {
     Path("software/win31-operator/README.md"): [
         "OG Communication Retro3.1",
@@ -367,7 +366,7 @@ def _require_text(path: Path, markers: list[str], label: str) -> list[str]:
     return [f"{label} missing marker: {marker}" for marker in markers if marker not in text]
 
 
-def _inspect_dosc_rnw_sources(dosc_root: Path = DOSC_ROOT) -> list[str]:
+def _inspect_dosc_rnw_sources(dosc_root: Path) -> list[str]:
     failures: list[str] = []
     if not dosc_root.exists():
         return [f"DOS-C source root missing for RNW parity audit: {dosc_root}"]
@@ -378,6 +377,21 @@ def _inspect_dosc_rnw_sources(dosc_root: Path = DOSC_ROOT) -> list[str]:
             continue
         failures.extend(_require_text(path, markers, f"DOS-C RNW parity source {rel.as_posix()}"))
     return failures
+
+
+def _audit_dosc_parity_scope(root: Path) -> list[str]:
+    scope = os.environ.get("RNW_DOSC_PARITY_SCOPE", "required")
+    if scope not in {"required", "standalone"}:
+        return [f"Invalid RNW_DOSC_PARITY_SCOPE: {scope!r}"]
+    explicit = "DOSC_ROOT" in os.environ
+    configured = os.environ.get("DOSC_ROOT", "")
+    if explicit and not configured.strip():
+        return ["DOSC_ROOT must identify a source directory when configured"]
+    dosc_root = Path(configured) if explicit else root.parent / "dos-c"
+    if scope == "standalone" and not explicit and not dosc_root.exists() and not dosc_root.is_symlink():
+        print("DOS-C RNW parity: not evaluated (explicit standalone scope; sibling source absent)")
+        return []
+    return _inspect_dosc_rnw_sources(dosc_root)
 
 
 def _package_json_paths(root: Path) -> list[Path]:
@@ -618,7 +632,7 @@ def audit_react_native(root: Path = ROOT) -> list[str]:
     for source_id in REQUIRED_SOURCE_IDS:
         if source_id not in source_index:
             failures.append(f"source index missing {source_id}")
-    failures.extend(_inspect_dosc_rnw_sources())
+    failures.extend(_audit_dosc_parity_scope(root))
 
     adr = root / ".agents" / "DECISIONS" / "ADR-0010-cbbs-react-native-client-platform.md"
     if not adr.exists():

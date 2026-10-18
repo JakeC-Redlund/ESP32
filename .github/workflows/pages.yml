@@ -40,6 +40,10 @@ jobs:
         run: python3 scripts/build_github_pages.py --out build/github-pages
 
       - name: Audit public artifact
+        env:
+          # The private DOS-C sibling is not checked out in this public workflow.
+          # Both scaffold entrypoints must explicitly report parity not evaluated.
+          RNW_DOSC_PARITY_SCOPE: standalone
         run: |
           python3 scripts/audit_public_manifest.py
           python3 scripts/smoke_github_pages.py
@@ -48,6 +52,8 @@ jobs:
           python3 scripts/verify_scaffold.py
 
       - name: Run host-side contract tests
+        env:
+          RNW_DOSC_PARITY_SCOPE: standalone
         run: |
           python3 -m py_compile scripts/*.py tests/four_relay_safe_core/run_host_tests.py
           PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests/custom_wireless_protocol -p 'test_*.py'

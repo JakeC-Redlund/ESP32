@@ -1,9 +1,13 @@
 from __future__ import annotations
 
+import contextlib
+import io
+import os
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -17,6 +21,77 @@ import scaffold_audit_react_native as rn_audit  # noqa: E402
 class ReactNativeScaffoldAuditTests(unittest.TestCase):
     def test_react_native_scaffold_audit_passes(self) -> None:
         self.assertEqual([], rn_audit.audit_react_native(ROOT))
+
+    def test_missing_required_dosc_source_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir, patch.dict(os.environ, {}, clear=True):
+            failures = rn_audit._audit_dosc_parity_scope(Path(temp_dir) / "ESP32")
+        self.assertTrue(any("source root missing" in item for item in failures), failures)
+
+    def test_standalone_missing_sibling_reports_not_evaluated(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir, patch.dict(
+            os.environ, {"RNW_DOSC_PARITY_SCOPE": "standalone"}, clear=True
+        ), contextlib.redirect_stdout(io.StringIO()) as output:
+            self.assertEqual([], rn_audit._audit_dosc_parity_scope(Path(temp_dir) / "ESP32"))
+        self.assertIn("parity: not evaluated", output.getvalue())
+
+    def test_standalone_does_not_hide_missing_or_empty_explicit_root(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            for configured in ["", str(Path(temp_dir) / "missing")]:
+                with self.subTest(configured=configured), patch.dict(
+                    os.environ, {"RNW_DOSC_PARITY_SCOPE": "standalone", "DOSC_ROOT": configured}, clear=True
+                ):
+                    self.assertTrue(rn_audit._audit_dosc_parity_scope(Path(temp_dir) / "ESP32"))
+
+    def test_available_dosc_source_is_audited_in_both_scopes(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir) / "ESP32"
+            dosc_root = root.parent / "dos-c"
+            dosc_root.mkdir()
+            for scope in ["required", "standalone"]:
+                with self.subTest(scope=scope), patch.dict(
+                    os.environ, {"RNW_DOSC_PARITY_SCOPE": scope}, clear=True
+                ):
+                    self.assertTrue(rn_audit._audit_dosc_parity_scope(root))
+            for rel, markers in rn_audit.DOSC_RNW_SOURCE_MARKERS.items():
+                path = dosc_root / rel
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("\n".join(markers), encoding="utf-8")
+            for scope in ["required", "standalone"]:
+                with self.subTest(scope=scope), patch.dict(
+                    os.environ, {"RNW_DOSC_PARITY_SCOPE": scope}, clear=True
+                ):
+                    self.assertEqual([], rn_audit._audit_dosc_parity_scope(root))
+            first = dosc_root / next(iter(rn_audit.DOSC_RNW_SOURCE_MARKERS))
+            first.write_text("unqualified source", encoding="utf-8")
+            with patch.dict(os.environ, {"RNW_DOSC_PARITY_SCOPE": "standalone"}, clear=True):
+                self.assertTrue(rn_audit._audit_dosc_parity_scope(root))
+
+    def test_invalid_dosc_scope_fails(self) -> None:
+        with patch.dict(os.environ, {"RNW_DOSC_PARITY_SCOPE": "typo"}, clear=True):
+            self.assertTrue(rn_audit._audit_dosc_parity_scope(ROOT))
+
+    def test_explicit_root_takes_precedence_over_invalid_sibling(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir) / "ESP32"
+            (root.parent / "dos-c").mkdir()
+            selected = Path(temp_dir) / "selected"
+            for rel, markers in rn_audit.DOSC_RNW_SOURCE_MARKERS.items():
+                path = selected / rel
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("\n".join(markers), encoding="utf-8")
+            for scope in ["required", "standalone"]:
+                with self.subTest(scope=scope), patch.dict(
+                    os.environ, {"RNW_DOSC_PARITY_SCOPE": scope, "DOSC_ROOT": str(selected)}, clear=True
+                ):
+                    self.assertEqual([], rn_audit._audit_dosc_parity_scope(root))
+
+    def test_standalone_broken_sibling_symlink_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir, patch.dict(
+            os.environ, {"RNW_DOSC_PARITY_SCOPE": "standalone"}, clear=True
+        ):
+            root = Path(temp_dir) / "ESP32"
+            (root.parent / "dos-c").symlink_to(root.parent / "absent", target_is_directory=True)
+            self.assertTrue(rn_audit._audit_dosc_parity_scope(root))
 
     def test_expected_contract_ids_are_pinned(self) -> None:
         protocol = (ROOT / "packages/cbbs-protocol/src/index.ts").read_text(encoding="utf-8")

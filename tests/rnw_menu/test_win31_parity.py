@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Tests for the CBBS RNW Win31 parity generator."""
+"""DOS-C source integration tests for the CBBS RNW Win31 parity generator."""
 
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 import tempfile
@@ -12,7 +13,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 TOOL_DIR = ROOT / "tools" / "react-native"
-DOSC_ROOT = Path("/mnt/h/dos-c")
+DOSC_ROOT = Path(os.environ.get("DOSC_ROOT", str(ROOT.parent / "dos-c")))
 sys.path.insert(0, str(TOOL_DIR))
 
 from generate_win31_parity import (  # noqa: E402
@@ -37,6 +38,16 @@ def _load_modified_xml(modified: str, dosc_root: Path = DOSC_ROOT) -> None:
 
 
 class Win31ParityGeneratorTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        if (
+            os.environ.get("RNW_DOSC_PARITY_SCOPE") == "standalone"
+            and "DOSC_ROOT" not in os.environ
+            and not DOSC_ROOT.exists()
+            and not DOSC_ROOT.is_symlink()
+        ):
+            raise unittest.SkipTest("DOS-C RNW parity not evaluated: private sibling source absent")
+
     def test_xml_source_generates_win31_parity_contract(self) -> None:
         contract = load_contract()
         self.assertEqual(contract["schema"], PARITY_SCHEMA)

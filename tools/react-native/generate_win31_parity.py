@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[2]
 TOOL_DIR = Path(__file__).resolve().parent
 XML_PATH = TOOL_DIR / "cbbs_rnw_win31_parity.v1.xml"
 TS_MODEL_PATH = ROOT / "packages/cbbs-product/src/win31Parity.generated.ts"
-DEFAULT_DOSC_ROOT = Path(os.environ.get("DOSC_ROOT", "/mnt/h/dos-c"))
+DEFAULT_DOSC_ROOT = Path(os.environ.get("DOSC_ROOT", str(ROOT.parent / "dos-c")))
 
 PARITY_SCHEMA = "cbbs_rnw_win31_parity.v1"
 PAGE_ORDER = (
