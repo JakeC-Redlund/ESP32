@@ -68,3 +68,13 @@ Independent QA accepted the correction; four real temporary child-process
 fixtures passed. Fresh actual browser QA also passed. Page, console, network,
 text, image and keyboard checks remain intact. Hosted CI must pass separately;
 the original failed run remains retained as evidence.
+
+The hosted repeat still found an ENOTEMPTY race after the launcher exited. The
+final correction requests graceful Browser.close through the exact endpoint
+captured from the unique profile, then independently verifies that endpoint is
+gone. An open, malformed or unresponsive endpoint prevents profile removal even
+when the launcher has exited. Independent loopback fixtures cover the live
+endpoint/exited-launcher failure, refused endpoint and malformed identity.
+Actual full browser QA through a real shell launcher passed with zero new
+temporary profiles left behind. Both prior hosted failures remain recorded;
+fresh hosted acceptance is still required.

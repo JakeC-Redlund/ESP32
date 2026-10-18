@@ -310,10 +310,16 @@ async function launchChrome(executable) {
       throw new Error(`Chrome exited before DevTools was ready: ${stderr.trim()}`);
     }
     if (fs.existsSync(activePortFile)) {
-      const [portText] = fs.readFileSync(activePortFile, "utf-8").trim().split(/\r?\n/);
+      const [portText, browserPath] = fs.readFileSync(activePortFile, "utf-8").trim().split(/\r?\n/);
       const port = Number(portText);
-      if (Number.isInteger(port) && port > 0) {
-        return { process: chrome, port, userDataDir, stderr: () => stderr };
+      if (Number.isInteger(port) && port > 0 && /^\/devtools\/browser\/[a-z0-9-]+$/i.test(browserPath || "")) {
+        return {
+          process: chrome,
+          port,
+          userDataDir,
+          browserWebSocketUrl: `ws://127.0.0.1:${port}${browserPath}`,
+          stderr: () => stderr,
+        };
       }
     }
     await sleep(100);
@@ -338,11 +344,79 @@ function waitForChromeExit(chrome, timeoutMs) {
   });
 }
 
+async function requestOwnedBrowserClose(handle) {
+  if (!handle.browserWebSocketUrl) {
+    return false;
+  }
+  let session = null;
+  let timer;
+  try {
+    // This endpoint came from the unique profile's DevToolsActivePort file.
+    session = new CdpSession(handle.browserWebSocketUrl);
+    await Promise.race([
+      (async () => {
+        await session.connect();
+        await session.send("Browser.close");
+      })(),
+      new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error("Owned browser close timed out")), 3000);
+      }),
+    ]);
+    return true;
+  } catch (_error) {
+    // A closing browser may drop CDP before acknowledging. Confirm process exit
+    // below and retain the existing bounded signal fallback when necessary.
+    return false;
+  } finally {
+    clearTimeout(timer);
+    if (session) {
+      session.close();
+    }
+  }
+}
+
+async function ownedBrowserEndpointState(handle) {
+  try {
+    const response = await fetch(`http://127.0.0.1:${handle.port}/json/version`, {
+      signal: AbortSignal.timeout(500),
+      redirect: "error",
+    });
+    if (!response.ok) {
+      return "unknown";
+    }
+    const version = await response.json();
+    if (version.webSocketDebuggerUrl === handle.browserWebSocketUrl) {
+      return "open";
+    }
+    // A reused port cannot authorize closing a different browser. Only a valid,
+    // distinct browser identity establishes that our exact endpoint is gone.
+    const expectedPrefix = `ws://127.0.0.1:${handle.port}/devtools/browser/`;
+    return typeof version.webSocketDebuggerUrl === "string"
+      && version.webSocketDebuggerUrl.startsWith(expectedPrefix)
+      && /^[a-z0-9-]+$/i.test(version.webSocketDebuggerUrl.slice(expectedPrefix.length))
+      ? "closed" : "unknown";
+  } catch (error) {
+    return error.cause && error.cause.code === "ECONNREFUSED" ? "closed" : "unknown";
+  }
+}
+
+async function waitForOwnedBrowserEndpointGone(handle) {
+  const deadline = Date.now() + 5000;
+  do {
+    if (await ownedBrowserEndpointState(handle) === "closed") {
+      return true;
+    }
+    await sleep(100);
+  } while (Date.now() < deadline);
+  return false;
+}
+
 async function stopChrome(handle) {
   if (!handle) {
     return;
   }
-  if (handle.process.exitCode === null && handle.process.signalCode === null) {
+  const closeAcknowledged = await requestOwnedBrowserClose(handle);
+  if (!(await waitForChromeExit(handle.process, 2000))) {
     handle.process.kill("SIGTERM");
     if (!(await waitForChromeExit(handle.process, 2000))) {
       handle.process.kill("SIGKILL");
@@ -350,6 +424,9 @@ async function stopChrome(handle) {
         throw new Error(`Owned Chrome did not exit; retained profile: ${handle.userDataDir}`);
       }
     }
+  }
+  if (handle.browserWebSocketUrl && !(await waitForOwnedBrowserEndpointGone(handle))) {
+    throw new Error(`Owned browser shutdown unverified (close acknowledged: ${closeAcknowledged}); retained profile: ${handle.userDataDir}`);
   }
   fs.rmSync(handle.userDataDir, {
     recursive: true,
