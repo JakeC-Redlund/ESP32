@@ -321,18 +321,42 @@ async function launchChrome(executable) {
   throw new Error(`Timed out waiting for Chrome DevTools port: ${stderr.trim()}`);
 }
 
+function waitForChromeExit(chrome, timeoutMs) {
+  if (chrome.exitCode !== null || chrome.signalCode !== null) {
+    return Promise.resolve(true);
+  }
+  return new Promise((resolve) => {
+    const onExit = () => {
+      clearTimeout(timer);
+      resolve(true);
+    };
+    const timer = setTimeout(() => {
+      chrome.removeListener("exit", onExit);
+      resolve(false);
+    }, timeoutMs);
+    chrome.once("exit", onExit);
+  });
+}
+
 async function stopChrome(handle) {
   if (!handle) {
     return;
   }
-  if (handle.process.exitCode === null) {
+  if (handle.process.exitCode === null && handle.process.signalCode === null) {
     handle.process.kill("SIGTERM");
-    await Promise.race([
-      new Promise((resolve) => handle.process.once("exit", resolve)),
-      sleep(2000).then(() => handle.process.kill("SIGKILL")),
-    ]);
+    if (!(await waitForChromeExit(handle.process, 2000))) {
+      handle.process.kill("SIGKILL");
+      if (!(await waitForChromeExit(handle.process, 2000))) {
+        throw new Error(`Owned Chrome did not exit; retained profile: ${handle.userDataDir}`);
+      }
+    }
   }
-  fs.rmSync(handle.userDataDir, { recursive: true, force: true });
+  fs.rmSync(handle.userDataDir, {
+    recursive: true,
+    force: true,
+    maxRetries: 10,
+    retryDelay: 100,
+  });
 }
 
 async function createTarget(port, targetUrl) {

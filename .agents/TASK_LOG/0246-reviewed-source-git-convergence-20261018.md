@@ -2,7 +2,7 @@
 
 Date: 2026-10-18
 
-Status: source validation complete; publication and final convergence checks pending
+Status: reviewed source published; hosted cleanup correction and final convergence checks pending
 
 Contract: [../../AGENTS.md](../../AGENTS.md)
 
@@ -56,3 +56,15 @@ Historical source ledgers retain their original attribution and dates.
 Native recovery preserves original source, dirty files and branch refs. The
 external git-convergence receipts record exact commands, results, source hashes,
 commits and hosted/default checks. Failed or deferred checks remain explicit.
+
+## Hosted CI follow-up
+
+The first hosted Pages run for the published source failed with ENOTEMPTY while
+removing its owned temporary Chromium profile. Local content/browser checks had
+passed. The cleanup now waits for actual owned-child exit after TERM and, when
+required, KILL, clears bounded timers/listeners, retains the profile if exit
+cannot be confirmed, and retries temporary-directory removal within a bound.
+Independent QA accepted the correction; four real temporary child-process
+fixtures passed. Fresh actual browser QA also passed. Page, console, network,
+text, image and keyboard checks remain intact. Hosted CI must pass separately;
+the original failed run remains retained as evidence.
