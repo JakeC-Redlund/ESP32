@@ -13,6 +13,13 @@ build proof, flashing, monitor, serial writes, live ESP-WIFI-MESH, BLE pairing,
 Android app behavior, router/admin mutation, PCAP, RF/XBee writes,
 relay/load/mains work, release, publication, commit, push, PR, or deploy.
 
+Current status note: Gate M4 later recorded the host-only adapter fixture proof
+under source ID
+`SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4-HOST-ADAPTER-2026-06-05`.
+That proof still does not accept ESP-IDF target creation, firmware build output,
+runtime implementation, persistence, live mesh, BLE, Android app behavior,
+router/admin mutation, flash, monitor, serial writes, or release work.
+
 ## Verified Facts
 
 - `ADR-0009` accepts `mesh_discovery.v1` as a host-only simulator/design
@@ -60,8 +67,8 @@ relay/load/mains work, release, publication, commit, push, PR, or deploy.
 
 ## Mapping Matrix
 
-This table is a design constraint for a future M4 build-only adapter proof. It
-is not runtime firmware acceptance.
+This table was the design constraint for the later Gate M4 host-only adapter
+proof. It is not runtime firmware acceptance.
 
 | Source concept | `mesh_discovery.v1` target | Required inputs | Derived or lossy fields | Source IDs |
 | --- | --- | --- | --- | --- |
@@ -93,9 +100,9 @@ is not runtime firmware acceptance.
   pairing token, Android identifier, raw message body, credential fields, and
   precise location fields.
 
-## Fixture Requirements For Future M4
+## Fixture Requirements Carried To Gate M4
 
-A future M4 build-only adapter proof should add host-only fixtures or tests for:
+The Gate M4 host adapter proof records host-only fixtures and tests for:
 
 - `node_seen`, `parent_selected`, `root_elected`, `root_switched`,
   `route_added`, `route_removed`, `node_lost`, `heal_started`,
@@ -114,8 +121,10 @@ A future M4 build-only adapter proof should add host-only fixtures or tests for:
 ## Gate Split
 
 - M3: this design review and mapping matrix only.
-- M4: future build-only firmware adapter proof with memory, queue, persistence,
-  and coexistence review.
+- M4: host-only adapter fixture proof recorded under
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4-HOST-ADAPTER-2026-06-05`;
+  Gate M4B later records build-only target proof; runtime implementation
+  remains a separate future gate.
 - M5: future live mesh proof only after fresh identity, backups, hashes,
   router/channel/mesh ID policy, rollback, route-table proof, root/parent
   failure proof, BLE coexistence proof, transcript, and cleanup.

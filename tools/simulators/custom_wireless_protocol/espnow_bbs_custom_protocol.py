@@ -180,6 +180,20 @@ DISCOVERY_CAPABILITY_BRIDGE_LABELS = {
     "route_leaf": "leaf",
     "route_table": "route",
 }
+DISCOVERY_EVENT_BRIDGE_LABELS = {
+    "ble_client_seen": "bs",
+    "capability_seen": "cs",
+    "heal_observed": "ho",
+    "heal_started": "hs",
+    "node_lost": "nl",
+    "node_seen": "ns",
+    "parent_selected": "ps",
+    "root_elected": "re",
+    "root_switched": "rs",
+    "route_added": "ra",
+    "route_removed": "rr",
+    "service_seen": "ss",
+}
 
 _HEADER = struct.Struct("!BBBBIIBB8s8sBB")
 
@@ -323,6 +337,22 @@ class DiscoveryNode:
                 DISCOVERY_CAPABILITY_BRIDGE_LABELS.get(value, value)
                 for value in self.capabilities[:2]
             ],
+        }
+        assert_no_discovery_secrets(payload)
+        return payload
+
+    def compact_bridge_record(self) -> dict[str, Any]:
+        payload = {
+            "id": _bridge_node_label(self.node_id),
+            "r": self.role[:1],
+            "l": self.layer,
+            "p": _bridge_node_label(self.parent),
+            "rt": _bridge_node_label(self.root),
+            "rssi": self.rssi,
+            "age": self.seen_ms,
+            "h": self.health[:1],
+            "svc": len(self.services),
+            "cap": len(self.capabilities),
         }
         assert_no_discovery_secrets(payload)
         return payload
@@ -540,6 +570,8 @@ class ProtocolSimulator:
         return "untested"
 
     def discovery_snapshot(self, limit: int = 2) -> dict[str, Any]:
+        bounded = _bounded_limit(limit, 1, 4)
+        nodes = sorted(self.discovery_nodes.values(), key=lambda item: item.node_id)
         response = {
             "type": "discovery_snapshot",
             "schema": DISCOVERY_SCHEMA_VERSION,
@@ -547,27 +579,35 @@ class ProtocolSimulator:
             "mode": DISCOVERY_MODE,
             "admin_gate": DISCOVERY_ADMIN_GATE,
             "simulator_only": True,
-            "nodes": [
-                node.bridge_record()
-                for node in sorted(self.discovery_nodes.values(), key=lambda item: item.node_id)[
-                    : _bounded_limit(limit, 1, 4)
-                ]
-            ],
-            "truncated": max(0, len(self.discovery_nodes) - _bounded_limit(limit, 1, 4)),
+            "nodes": [node.bridge_record() for node in nodes[:bounded]],
+            "truncated": max(0, len(self.discovery_nodes) - bounded),
         }
         assert_no_discovery_secrets(response)
+        if not _bridge_response_fits(response):
+            response["nodes"] = [node.compact_bridge_record() for node in nodes[:bounded]]
+            response["compact"] = True
+            response.pop("simulator_only", None)
+            response.pop("transport", None)
+            response.pop("admin_gate", None)
+            encode_bridge_frame(response)
         return response
 
     def discovery_events(self, limit: int = 4) -> dict[str, Any]:
         bounded = _bounded_limit(limit, 1, 8)
+        events = self.discovery_event_log[-bounded:]
         response = {
             "type": "discovery_events",
             "schema": DISCOVERY_SCHEMA_VERSION,
             "mode": DISCOVERY_MODE,
             "simulator_only": True,
-            "events": self.discovery_event_log[-bounded:],
+            "events": events,
         }
         assert_no_discovery_secrets(response)
+        if not _bridge_response_fits(response):
+            response["events"] = [_compact_discovery_event(event) for event in events]
+            response["compact"] = True
+            response.pop("simulator_only", None)
+            encode_bridge_frame(response)
         return response
 
     def service_catalog(self, limit: int = 8) -> dict[str, Any]:
@@ -1198,6 +1238,39 @@ def assert_no_discovery_secrets(payload: Any) -> None:
     elif isinstance(payload, (list, tuple)):
         for item in payload:
             assert_no_discovery_secrets(item)
+
+
+def _bridge_response_fits(response: Mapping[str, Any]) -> bool:
+    try:
+        encode_bridge_frame(response)
+    except ProtocolError as exc:
+        if exc.reason == "line_too_long":
+            return False
+        raise
+    return True
+
+
+def _bridge_node_label(node_id: str) -> str:
+    if node_id == "none":
+        return "-"
+    if node_id == "coord01":
+        return "c01"
+    if node_id.startswith("peer") and node_id[4:].isdigit():
+        return f"p{int(node_id[4:]):02d}"
+    return node_id
+
+
+def _compact_discovery_event(event: Mapping[str, Any]) -> dict[str, Any]:
+    payload = {
+        "s": event["seq"],
+        "e": DISCOVERY_EVENT_BRIDGE_LABELS.get(str(event["event"]), str(event["event"])[:2]),
+        "n": _bridge_node_label(str(event["node"])),
+    }
+    detail = str(event.get("detail", ""))
+    if detail:
+        payload["d"] = detail[:12]
+    assert_no_discovery_secrets(payload)
+    return payload
 
 
 def _optional_limit(frame: Mapping[str, Any], *, default: int, maximum: int) -> int:

@@ -1,9 +1,10 @@
 name = "react-native-protocol-state-reviewer"
 description = "Read-only reviewer for CBBS React Native fixture protocol, state reducer, schema bounds, and no-transport side effects."
 model_reasoning_effort = "high"
-sandbox_mode = "read-only"
 nickname_candidates = ["RNProtocol", "RNState"]
 developer_instructions = '''
+Read-only is this role’s task contract. Do not edit files. Permissions inherit from the parent session; this file creates no independent confinement. Confirm the parent policy before delegation.
+
 Stay read-only. Purpose: review CBBS React Native fixture protocol, state reducer, schema bounds, no-secret behavior, and separation from bridge, serial, RF, and firmware ABIs.
 
 Inputs: AGENTS.md, ADR-0010, docs/projects/cbbs-react-native, packages/cbbs-protocol, packages/cbbs-state, packages/cbbs-fixtures, tests, and related ESP-NOW BBS ABI docs.

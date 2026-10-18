@@ -8,8 +8,10 @@ It is planning guidance, not authority to run any command.
 | `git status --short --branch --untracked-files=all` | read-only | Safe preflight. |
 | `git diff --check` | read-only | Safe whitespace validation. |
 | `PYTHONDONTWRITEBYTECODE=1 python3 scripts/verify_scaffold.py` | read-only | Full scaffold audit; may read many repo files. |
+| `PYTHONDONTWRITEBYTECODE=1 python3 scripts/verify_scaffold.py --audit <name>` | read-only | One registered scaffold audit group; used by non-deploy scaffold CI matrix. |
 | `PYTHONDONTWRITEBYTECODE=1 python3 scripts/scaffold_audit_records.py --min-task-id N` | read-only | Durable-record audit. |
 | `PYTHONDONTWRITEBYTECODE=1 python3 scripts/scaffold_audit_react_native.py` | read-only | Rejects generated RNW output and checks local records. |
+| `source /home/cyber/.espressif/tools/activate_idf_v6.0.1.sh && idf.py -C firmware/projects/<accepted-project> -B /tmp/<build-dir> build` | temp-mutating | No-flash accepted-project ESP-IDF build proof; build directory must stay outside the repo or be cleaned. |
 | `PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests/custom_wireless_protocol -p 'test_*.py'` | read-only | Host-only protocol tests. |
 | `PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests/lcd_bbs_menu -p 'test_*.py'` | read-only | Host-only LCD simulator tests. |
 | `PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests/rnw_menu -p 'test_*.py'` | read-only | Host-only RNW menu generator tests. |
@@ -21,6 +23,7 @@ It is planning guidance, not authority to run any command.
 | `python3 scripts/build_github_pages.py --out build/github-pages` | repo-mutating generated output | Writes generated public artifact under `build/`. |
 | `python3 scripts/audit_public_manifest.py` | read-only | Reads generated Pages artifact. |
 | `python3 scripts/smoke_github_pages.py` | read-only/temp-mutating | May start a local static server only through explicit script behavior. |
+| `node scripts/browser_qa_prototype_packet.js build/github-pages` | read-only/temp-mutating | Starts a local HTTP server and headless browser against generated public Pages output; no upload/deploy. |
 | `scripts/live_bench_preflight.py` | live/device-adjacent read-only | Requires explicit live-gate routing before use against devices. |
 | `scripts/espnow_bbs_live_gate.py prepare` | live/device backup manifest gate | Requires Tier 3 same-session evidence and explicit authority. |
 | `scripts/espnow_bbs_live_gate.py flash` | live/device write gate | Requires Tier 3 same-session evidence, rollback, and explicit authority. |

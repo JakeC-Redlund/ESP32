@@ -57,6 +57,7 @@ def audit_pages_build(root: Path = ROOT) -> list[str]:
         "Check JSON and JavaScript syntax",
         "build/github-pages",
         "Audit public artifact",
+        "browser_qa_prototype_packet.js",
         "Run host-side contract tests",
     ], "Pages workflow"))
 
@@ -65,6 +66,9 @@ def audit_pages_build(root: Path = ROOT) -> list[str]:
         encoding="utf-8"
     )
     smoke_script = (root / "scripts/smoke_github_pages.py").read_text(
+        encoding="utf-8"
+    )
+    browser_script = (root / "scripts/browser_qa_prototype_packet.js").read_text(
         encoding="utf-8"
     )
     for blocked_marker in [
@@ -141,6 +145,19 @@ def audit_pages_build(root: Path = ROOT) -> list[str]:
     ]:
         if marker not in smoke_script:
             failures.append(f"Pages smoke script missing marker: {marker}")
+    for marker in [
+        "Chrome executable not found",
+        "EXPECTED_WEBP_DIMENSIONS",
+        "prototype-evidence-map.webp",
+        "checkFocusVisibility",
+        "same-origin request failure",
+        "horizontal overflow",
+        "Runtime.consoleAPICalled",
+        "Network.loadingFailed",
+        "PASS: Prototype Build Packet browser QA succeeded",
+    ]:
+        if marker not in browser_script:
+            failures.append(f"Pages browser QA script missing marker: {marker}")
     return failures
 
 

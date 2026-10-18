@@ -145,12 +145,66 @@ typedef struct {
 } fr_xbee_at_response_t;
 
 typedef struct {
+    uint8_t frame_id;
+    uint8_t source64[8];
+    uint16_t reserved16;
+    char command[3];
+    uint8_t command_status;
+    uint8_t value[FR_XBEE_AT_VALUE_MAX];
+    size_t value_len;
+} fr_xbee_remote_at_response_t;
+
+typedef struct {
+    uint8_t status;
+} fr_xbee_modem_status_t;
+
+typedef struct {
     uint8_t source64[8];
     uint16_t source16;
     uint8_t receive_options;
     uint8_t payload[FR_XBEE_MAX_FRAME_DATA];
     size_t payload_len;
 } fr_xbee_receive_packet_t;
+
+typedef struct {
+    uint8_t source64[8];
+    uint16_t reserved16;
+    uint8_t source_endpoint;
+    uint8_t destination_endpoint;
+    uint16_t cluster_id;
+    uint16_t profile_id;
+    uint8_t receive_options;
+    uint8_t payload[FR_XBEE_MAX_FRAME_DATA];
+    size_t payload_len;
+} fr_xbee_explicit_receive_packet_t;
+
+typedef struct {
+    uint8_t frame_id;
+    uint16_t reserved16;
+    uint8_t retry_count;
+    uint8_t delivery_status;
+    uint8_t discovery_status;
+} fr_xbee_transmit_status_t;
+
+typedef struct {
+    uint8_t source_event;
+    uint8_t data_length;
+    uint32_t timestamp_us;
+    uint8_t ack_timeout_count;
+    uint8_t tx_blocked_count;
+    uint8_t reserved;
+    uint8_t destination64[8];
+    uint8_t source64[8];
+    uint8_t responder64[8];
+    uint8_t receiver64[8];
+    size_t trailing_len;
+} fr_xbee_route_information_t;
+
+typedef struct {
+    uint8_t reserved;
+    uint8_t new_address64[8];
+    uint8_t old_address64[8];
+} fr_xbee_aggregate_addressing_update_t;
 
 const char *fr_status_name(fr_status_t status);
 
@@ -226,9 +280,42 @@ fr_status_t fr_xbee_parse_at_response(
     const fr_xbee_frame_t *frame,
     fr_xbee_at_response_t *response
 );
+const char *fr_xbee_at_command_status_label(uint8_t command_status);
+fr_status_t fr_xbee_parse_remote_at_response(
+    const fr_xbee_frame_t *frame,
+    fr_xbee_remote_at_response_t *response
+);
+const char *fr_xbee_remote_at_command_status_label(uint8_t command_status);
+fr_status_t fr_xbee_parse_modem_status(
+    const fr_xbee_frame_t *frame,
+    fr_xbee_modem_status_t *status
+);
+const char *fr_xbee_modem_status_label(uint8_t status);
 fr_status_t fr_xbee_parse_receive_packet(
     const fr_xbee_frame_t *frame,
     fr_xbee_receive_packet_t *packet
 );
+fr_status_t fr_xbee_parse_explicit_receive_packet(
+    const fr_xbee_frame_t *frame,
+    fr_xbee_explicit_receive_packet_t *packet
+);
+bool fr_xbee_receive_options_acknowledged(uint8_t options);
+bool fr_xbee_receive_options_broadcast(uint8_t options);
+const char *fr_xbee_receive_options_delivery_method_label(uint8_t options);
+fr_status_t fr_xbee_parse_route_information(
+    const fr_xbee_frame_t *frame,
+    fr_xbee_route_information_t *route
+);
+const char *fr_xbee_route_information_source_event_label(uint8_t source_event);
+fr_status_t fr_xbee_parse_aggregate_addressing_update(
+    const fr_xbee_frame_t *frame,
+    fr_xbee_aggregate_addressing_update_t *update
+);
+fr_status_t fr_xbee_parse_transmit_status(
+    const fr_xbee_frame_t *frame,
+    fr_xbee_transmit_status_t *status
+);
+const char *fr_xbee_delivery_status_label(uint8_t delivery_status);
+const char *fr_xbee_discovery_status_label(uint8_t discovery_status);
 
 #endif

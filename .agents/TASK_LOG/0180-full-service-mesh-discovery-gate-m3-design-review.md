@@ -118,6 +118,6 @@ and `admin-strict` installation.
 
 ## Decision
 
-Decision: accept the bounded Tier 2 Gate M3 design review. Future work moves to
-M4 build-only firmware adapter proof only after a separate gate; live mesh
-remains M5/Tier 3 only.
+Decision: accept the bounded Tier 2 Gate M3 design review. The M4 host adapter
+fixture proof is now recorded separately; firmware target/build proof remains a
+separate future gate and live mesh remains M5/Tier 3 only.

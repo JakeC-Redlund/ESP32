@@ -45,7 +45,8 @@ relay/load/mains, release, publication, commit, push, PR, or deploy.
 
 ## Assumptions
 
-- Concept-level M3 mapping is useful before an M4 build-only adapter proof.
+- Concept-level M3 mapping was useful before the separately recorded M4 host
+  adapter fixture proof; firmware target/build proof remains a future gate.
 - Exact firmware callbacks, event names, queue policy, memory policy, and
   persistence policy remain implementation-gate decisions.
 - BLE/Android information remains metadata unless a later BLE/Android gate
@@ -90,6 +91,7 @@ Passed on 2026-06-05:
 
 ## Decision
 
-Decision: accept the M3 design review. The future M4 gate must remain
-build-only and separately reviewed; live mesh remains a future Tier 3 M5 gate
-with same-session evidence and recovery/cleanup proof.
+Decision: accept the M3 design review. The M4 host adapter fixture proof is now
+recorded separately; firmware target/build proof remains a future gate and live
+mesh remains a future Tier 3 M5 gate with same-session evidence and
+recovery/cleanup proof.

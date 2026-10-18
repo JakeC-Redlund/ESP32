@@ -11,6 +11,9 @@ Public guide:
 CAD source:
 [../../cad/hardware-rapid-prototyping/low_voltage_fixture_plate_v0.scad](../../cad/hardware-rapid-prototyping/low_voltage_fixture_plate_v0.scad)
 
+Measurement packet register:
+[per-lane-measurement-packet-register.md](per-lane-measurement-packet-register.md)
+
 Status: Internal evidence workbook. Do not include this workbook in the public
 Pages allowlist.
 
@@ -22,6 +25,11 @@ Pages allowlist.
 - The OpenSCAD source is provisional and has no board-specific mounting holes.
 - Required material, printer, ventilation, and measurement evidence is not
   recorded in this workbook yet.
+- The per-lane measurement packet register is internal, not public-safe
+  guidance, and all physical measurement packets remain open.
+- Task 0222 records structural validation and public-bundle exclusion status
+  only; it does not close any physical, fit, electrical, hardware, live, or
+  release gate.
 
 ## Assumptions
 
@@ -61,7 +69,7 @@ Pages allowlist.
 | Cable-tie review | Tie width, slot fit, bend radius, strain, and no-contact observation. | Not recorded |  |
 | Label review | Label zones, channel names, source of labels, and no-obstruction check. | Not recorded |  |
 | Low-voltage separation | Proof that fixture use remains low-voltage-only and does not approach relay contacts, loads, or mains. | Not recorded |  |
-| Public package review | Confirm guide is public-safe and workbook/CAD/generated artifacts are not in the public allowlist. | Not recorded |  |
+| Public package review | Confirm guide is public-safe and workbook/CAD/generated artifacts are not in the public allowlist. | Records-only validation status recorded in Task 0222; physical package acceptance remains open. | No public allowlist expansion. |
 
 ## Measurement Table
 
@@ -90,8 +98,8 @@ Pages allowlist.
 | Hardware | Dimensions are measured or unresolved gaps are explicit. |  | Pending |
 | Safety/Power | Material, ventilation, low-voltage, relay/load/mains, and stop gates are explicit. |  | Pending |
 | Fabrication/CAD | CAD parameters match measured evidence; no generated artifacts are committed. |  | Pending |
-| Release/Tooling | Public Pages bundle includes only the public guide, not this workbook or CAD source. |  | Pending |
-| QA | Validation commands, source-ID scan, link scan, static CAD check, and diff check pass. |  | Pending |
+| Release/Tooling | Public Pages bundle includes only the public guide, not this workbook or CAD source. | Task 0222 | Accepted records-only for current public-bundle exclusion; no publication authority. |
+| QA | Validation commands, source-ID scan, link scan, static CAD check, and diff check pass. | Task 0222 | Accepted records-only for current structural/public-exclusion validation; no physical acceptance. |
 
 ## Stop Gates
 
@@ -112,12 +120,12 @@ Record the exact command, result, and date for each validation run:
 
 | Check | Result | Notes |
 | --- | --- | --- |
-| Scaffold validation | Pending |  |
-| Agent-process audit | Pending |  |
-| Pages build | Pending |  |
-| Public manifest audit | Pending |  |
-| Pages smoke | Pending |  |
+| Scaffold validation | Passed in Task 0222 | Records-only; no physical acceptance. |
+| Agent-process audit | Passed in Task 0222 | Records-only; no physical acceptance. |
+| Pages build | Passed in Task 0222 | Public-bundle exclusion only; no publication authority. |
+| Public manifest audit | Passed in Task 0222 | Public-bundle exclusion only; no publication authority. |
+| Pages smoke | Passed in Task 0222 | Public-bundle exclusion only; no publication authority. |
 | Static OpenSCAD source check | Pending |  |
-| Changed-file source-ID scan | Pending |  |
-| Markdown link check | Pending |  |
-| `git diff --check` | Pending |  |
+| Changed-file source-ID scan | Passed in Task 0222 | Records-only; no physical acceptance. |
+| Markdown link check | Passed in Task 0222 | Records-only; no physical acceptance. |
+| `git diff --check` | Passed in Task 0222 | Records-only; no physical acceptance. |

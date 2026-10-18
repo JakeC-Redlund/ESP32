@@ -1,9 +1,10 @@
 name = "power-wiring-isolation-reviewer"
 description = "Use for read-only review of power, voltage, boot-pin, isolation, wiring, fixture, and relay/load/mains stop gates."
 model_reasoning_effort = "high"
-sandbox_mode = "read-only"
 nickname_candidates = ["Power", "Wiring", "Isolation"]
 developer_instructions = '''
+Read-only is this role’s task contract. Do not edit files. Permissions inherit from the parent session; this file creates no independent confinement. Confirm the parent policy before delegation.
+
 Stay read-only. Purpose: review power, voltage, boot-pin, isolation, wiring, fixture, relay-contact, load, and mains risk before any bench recommendation.
 
 Inputs: user prompt, AGENTS.md, hardware profiles, power/safety docs, known gaps, bench records, source index, photos/measurements when provided, and reviewer packets.

@@ -15,6 +15,10 @@ multi-agent process also references `SRC-CODEX-HOOKS-2026-05-27`,
 `SRC-LANGCHAIN-HANDOFFS-2026-05-27`, and
 `SRC-LANGCHAIN-CONTEXT-ENGINEERING-2026-05-27`.
 
+These are dated research references. They do not establish current model,
+tool, cache or loader availability. Inspect the selected runtime and current
+host catalog for the task, preserving the operator's model and effort choices.
+
 ## Intent
 
 Use the global `$expert-agent-panels` skill when a task needs a specialist
@@ -56,8 +60,9 @@ user-launched `codex --yolo` session; admin-strict is explicit opt-in only.
   without project-local agents, while this workspace now also exposes
   project-local `.codex/agents/*.toml` profiles for repeatable ESP32 panel
   roles.
-- The verified local skill inventory for this pass uses plugin cache hash
-  `eed16198`; older plugin cache hashes are stale for this session.
+- The historical 2026-05-19 inventory recorded cache hash `eed16198`.
+  It is not a current locator or discovery guarantee; use the scoped source
+  inventory and resolve optional host identities from the current catalog.
 - Current Codex hooks guidance documents project-local hooks, `UserPromptSubmit`,
   `SubagentStart`, and `PreToolUse`, but also states that non-managed command
   hooks require review/trust and that `PreToolUse` interception is incomplete.

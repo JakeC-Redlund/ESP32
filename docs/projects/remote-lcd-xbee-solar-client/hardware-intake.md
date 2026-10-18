@@ -18,6 +18,34 @@
   close exact component identity, power safety, pin-risk, XBee carrier, or
   bench readiness. Source ID:
   `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-HARDWARE-INTAKE-AUDIT-2026-06-05`.
+- Current same-session dirty worktree evidence shows a `docs/identity-intake.md`
+  packet file in all seven private `rlxsc-*` submodule worktrees. These files
+  are not accepted here as committed submodule state, parent-pinned state,
+  selected hardware, exact component identity, measurements, or bench
+  readiness. Source ID:
+  `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-SUBMODULE-IDENTITY-WORKTREE-CONSOLIDATION-2026-06-06`.
+- The first three priority power/safety packets have been reviewed and tracked
+  only as docs/records-only packet structures in current dirty submodule
+  worktrees: `rlxsc-18650-cell`, `rlxsc-bms-protection`, and
+  `rlxsc-solar-charger-power-path`. This does not close exact hardware
+  identity, source closure, compatibility, measurements, current limits,
+  submodule commits, parent pointer updates, safety closure, or bench
+  readiness. Source ID:
+  `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-POWER-SAFETY-PACKET-REVIEW-2026-06-06`.
+- The remaining four board/interface/XBee packets have been reviewed and
+  tracked only as docs/records-only packet structures in current dirty
+  submodule worktrees: `rlxsc-esp32-client-node`, `rlxsc-lcd-20x4-i2c`,
+  `rlxsc-rotary-encoder`, and `rlxsc-xbee-pro-s3b`. This does not close exact
+  hardware identity, source closure, pin readiness, RF readiness,
+  compatibility, measurements, submodule commits, parent pointer updates,
+  firmware readiness, or bench readiness. Source ID:
+  `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-BOARD-INTERFACE-XBEE-PACKET-REVIEW-2026-06-06`.
+- All seven identity-intake packets now have submodule-local docs/records-only
+  review records in current dirty submodule worktrees. This does not close
+  exact hardware identity, source closure, measurements, compatibility, safety
+  closure, pin readiness, RF readiness, firmware readiness, submodule commits,
+  parent pointer updates, or bench readiness. Source ID:
+  `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-SUBMODULE-LOCAL-REVIEW-2026-06-06`.
 
 ## Assumptions
 
@@ -48,8 +76,11 @@
 - Whether candidate IC references match any purchased module.
 - Whether the deployment environment needs weatherproofing, UV exposure,
   condensation control, temperature derating, or regulatory review.
-- Whether any private submodule has collected exact selected-part evidence
-  beyond the README-level scaffold visible from the parent repo.
+- Whether any private submodule has collected source-backed exact selected-part
+  evidence beyond the current dirty worktree identity-intake and local-review
+  packet structures.
+- Whether any identity-intake packet file has been committed inside its
+  submodule and later parent-pinned.
 
 ## Stop gates
 

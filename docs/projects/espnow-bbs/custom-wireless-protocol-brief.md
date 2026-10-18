@@ -278,7 +278,13 @@ Source index: [../../../knowledge-base/source-index.md](../../../knowledge-base/
   `SRC-LOCAL-ESPNOW-CUSTOM-WIRELESS-PROTOCOL-PHASE-5-6-RUNTIME-DESIGN-REVIEW-2026-05-26`,
   but remains unresolved for firmware runtime packet/job queues, firmware
   persistence, migration, recovery, firmware memory budgets, and live proof.
-- [blocked-until-evidence] Ag telemetry payloads, GPS pivot positioning, GPS
-  asset tracking, analytics surfaces beyond ADR-0005 local-admin export,
-  selected sensors, power/voltage/isolation notes, and retention policies
-  remain unresolved until source-backed profiles and ADRs exist.
+- [candidate-profile-boundary] Task 0226 and ADR-0011 record candidate
+  agricultural telemetry class planning profiles and taxonomy/protocol-family
+  boundaries under
+  `SRC-LOCAL-AGRICULTURAL-TELEMETRY-PROFILE-BOUNDARY-2026-06-07`.
+  Ag telemetry payloads, GPS pivot positioning, GPS asset tracking
+  implementation, analytics surfaces beyond ADR-0005 local-admin export,
+  selected sensors, power/voltage/isolation notes, protocol/API details,
+  calibration/units, retention policies, and live proof remain unresolved until
+  exact local equipment/service evidence and a separate implementation gate
+  exist.

@@ -49,13 +49,23 @@ transport.
 ## Unknowns
 
 - No fresh copied Win31 screenshot/OCR/CV packet was captured by this slice.
-- No Client-1 static/simulated browser proof or Client-2 selected-board live
-  Wi-Fi proof exists.
+- This original UI-0/M2-B slice did not capture Client-1 static/simulated
+  browser proof or Client-2 selected-board live Wi-Fi proof.
 - No firmware mapping review from ESP-WIFI-MESH APIs/events into
   `mesh_discovery.v1` is accepted.
 - No live mesh, BLE, Android app, router/admin, PCAP, flash, serial-write,
   relay, XBee, TFT, MicroSD, load, mains, dummy-output, release, or cleanup
   evidence was captured.
+
+Current status note: later M3 design-only mapping review, M4 host-only adapter
+proof, and Client-1 static/simulated browser proof are recorded under
+`SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M3-DESIGN-REVIEW-2026-06-05`,
+`SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4-HOST-ADAPTER-2026-06-05`,
+and `SRC-LOCAL-BBS-UI-CLIENT1-STATIC-BROWSER-PROOF-2026-06-05`. Those later
+records still do not accept Client-2 live proof, live browser/device
+connectivity, native runtime, ESP-IDF target/build proof, firmware runtime,
+live mesh, BLE, Android app behavior, router/admin, flash, serial writes,
+release, or cleanup evidence.
 
 ## UI-0 Ranked Packet
 

@@ -21,6 +21,33 @@ power-path wiring, pin assignments, or live bench action.
 - Task 0183 records a parent repo hardware intake audit with fresh submodule
   status context and keeps all component identity gaps open. Source ID:
   `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-HARDWARE-INTAKE-AUDIT-2026-06-05`.
+- Task 0218 records that all seven private `rlxsc-*` submodule worktrees now
+  contain current `docs/identity-intake.md` packet files. The packet files are
+  dirty worktree evidence only, not committed submodule state, parent-pinned
+  state, selected hardware, exact identity closure, measurements, or bench
+  readiness. Source ID:
+  `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-SUBMODULE-IDENTITY-WORKTREE-CONSOLIDATION-2026-06-06`.
+- Task 0219 records that the first three priority power/safety packets
+  (`rlxsc-18650-cell`, `rlxsc-bms-protection`, and
+  `rlxsc-solar-charger-power-path`) have been reviewed and tracked as
+  docs/records-only packet structures in current dirty submodule worktrees.
+  No exact hardware identity, submodule commit, parent pin, measurement,
+  compatibility, safety closure, or bench readiness is accepted. Source ID:
+  `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-POWER-SAFETY-PACKET-REVIEW-2026-06-06`.
+- Task 0220 records that the remaining four board/interface/XBee packets
+  (`rlxsc-esp32-client-node`, `rlxsc-lcd-20x4-i2c`,
+  `rlxsc-rotary-encoder`, and `rlxsc-xbee-pro-s3b`) have been reviewed and
+  tracked as docs/records-only packet structures in current dirty submodule
+  worktrees. No exact hardware identity, submodule commit, parent pin,
+  measurement, pin readiness, RF readiness, firmware readiness, compatibility,
+  or bench readiness is accepted. Source ID:
+  `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-BOARD-INTERFACE-XBEE-PACKET-REVIEW-2026-06-06`.
+- Task 0221 records that all seven identity-intake packets now have
+  submodule-local docs/records-only review records in current dirty submodule
+  worktrees. No exact hardware identity, submodule commit, parent pin,
+  source closure, measurement, compatibility, safety closure, pin readiness,
+  RF readiness, firmware readiness, or bench readiness is accepted. Source ID:
+  `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-SUBMODULE-LOCAL-REVIEW-2026-06-06`.
 - ESP-NOW BBS, Gate F, Gate G, Gate H, mesh, BLE, PCAP, Win31/DOS-C bridge,
   flash, erase, monitor, serial-write, relay, load, mains, TFT, MicroSD, and
   network expansion gates are tracked separately in the development status
@@ -83,14 +110,18 @@ power-path wiring, pin assignments, or live bench action.
 
 ## Current next action
 
-Start with source-backed hardware identity intake inside the private
-submodules. Prioritize cell, BMS/protection, charger/power path, panel,
-fuse/protection, enclosure, and current-limit evidence before any board or
-interface bench action.
+Commit the current submodule-local identity-intake and local-review records
+only with explicit submodule commit authority, then later parent-pin reviewed
+submodule commits only with explicit parent pointer authority. Continue exact
+hardware evidence collection for cell, BMS/protection, charger, panel,
+fuse/protection, enclosure, ESP32 board, LCD/backpack, encoder, XBee carrier,
+antenna, voltage domains, pullups, pin-risk, compatibility, power budget, and
+current-limit evidence before any bench action.
 
-Task 0183 does not change that next action. It only records that parent
-coordination status has been audited and that exact hardware identities,
-measurements, and safety evidence remain open.
+Tasks 0218, 0219, 0220, and 0221 change only routing/status wording and
+docs/records packets. Exact hardware identities, measurements, safety
+evidence, pin readiness, RF readiness, firmware readiness, submodule commits,
+parent pointer updates, and bench readiness remain open.
 
 ## Stop gates
 

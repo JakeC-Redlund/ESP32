@@ -156,6 +156,7 @@ Run these checks before handoff:
 python3 scripts/build_github_pages.py
 python3 scripts/audit_public_manifest.py
 python3 scripts/smoke_github_pages.py
+node scripts/browser_qa_prototype_packet.js build/github-pages
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests/scaffold_audits -p 'test_*.py'
 python3 scripts/verify_scaffold.py
 PYTHONDONTWRITEBYTECODE=1 python3 scripts/scaffold_audit_skills.py
@@ -165,17 +166,23 @@ python3 -m py_compile scripts/*.py tests/four_relay_safe_core/run_host_tests.py
 git diff --check
 ```
 
-The GitHub Actions Pages workflow runs the non-browser subset before uploading
-the Pages artifact: JSON and JavaScript syntax checks, `git diff --check`,
-build, manifest audit, smoke checks, full scaffold-audit unittest discovery,
-scaffold verification, Python compilation, and host-side contract tests.
+The GitHub Actions Pages workflow runs the public-artifact checks before
+uploading the Pages artifact: JSON and JavaScript syntax checks, `git diff
+--check`, build, manifest audit, smoke checks, checked-in Prototype Build Packet
+browser QA, full scaffold-audit unittest discovery, scaffold verification,
+Python compilation, and host-side contract tests. The browser QA starts a local
+HTTP server, launches Chrome through the DevTools protocol, and fails closed if
+Chrome is unavailable.
 
 The non-deploy `scaffold-ci.yml` workflow runs on pull requests and manual
-dispatch. It validates scaffold audits and host tests without uploading or
-deploying a Pages artifact.
+dispatch. It builds the curated public artifact and runs manifest, smoke,
+browser QA, scaffold audits, and host tests without uploading or deploying a
+Pages artifact.
 
-Local browser verification should confirm that the landing page renders on
-desktop and mobile, `blueprints.html`, `quality.html`, and
-`demos/admin-hmi/index.html` render without horizontal overflow, public bundle
-links resolve, safety disclaimers are visible, and no console errors are
-emitted.
+Checked-in browser QA covers desktop and mobile rendering for the landing page,
+Prototype Build Packet, `blueprints.html`, `quality.html`, and
+`demos/admin-hmi/index.html`; decoded WebP dimensions; same-origin request
+failures; runtime console errors; keyboard focus visibility on
+`prototype.html`; and horizontal overflow. Local browser review can still be
+used for subjective visual inspection, but CI owns the mandatory regression
+checks.

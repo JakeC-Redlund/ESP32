@@ -48,7 +48,7 @@ SAFETY_MARKERS = [
 
 
 class DevelopmentAgentPanelTests(unittest.TestCase):
-    def test_panel_profiles_are_registered_and_read_only(self) -> None:
+    def test_panel_profiles_are_registered_with_inherited_permissions(self) -> None:
         config = tomllib.loads((ROOT / ".codex/config.toml").read_text(encoding="utf-8"))
         agents = config["agents"]
         for profile in PANEL_PROFILES:
@@ -59,7 +59,13 @@ class DevelopmentAgentPanelTests(unittest.TestCase):
                     (ROOT / ".codex/agents" / f"{profile}.toml").read_text(encoding="utf-8")
                 )
                 self.assertEqual(profile, data["name"])
-                self.assertEqual("read-only", data["sandbox_mode"])
+                self.assertNotIn("sandbox_mode", data)
+                self.assertNotIn("approval_policy", data)
+                instructions = data["developer_instructions"]
+                self.assertIn("Read-only is this role’s task contract", instructions)
+                self.assertIn("Do not edit files", instructions)
+                self.assertIn("Permissions inherit from the parent session", instructions)
+                self.assertIn("no independent confinement", instructions)
 
     def test_panel_profiles_preserve_boundaries(self) -> None:
         for profile in PANEL_PROFILES:

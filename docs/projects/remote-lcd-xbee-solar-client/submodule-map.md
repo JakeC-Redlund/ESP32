@@ -12,6 +12,31 @@
 - Existing XBee coverage is for Digi `XBP9B-DPUT-001` and the current
   read-only proof boundary. Source IDs: `SRC-DIGI-XBP9B-DPUT-001`,
   `SRC-LOCAL-XBEE-READONLY-PROBE-2026-05-18`.
+- Current same-session dirty worktree evidence shows a `docs/identity-intake.md`
+  packet file in all seven private `rlxsc-*` submodule worktrees. This does
+  not prove committed submodule state, parent-pinned submodule state, exact
+  hardware identity, selected parts, measurements, or bench readiness. Source
+  ID:
+  `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-SUBMODULE-IDENTITY-WORKTREE-CONSOLIDATION-2026-06-06`.
+- The first three priority power/safety packets (`rlxsc-18650-cell`,
+  `rlxsc-bms-protection`, and `rlxsc-solar-charger-power-path`) have a
+  parent records-only docs review/tracking pass. This does not prove exact
+  hardware identity, submodule commit state, parent-pinned state,
+  measurements, compatibility, safety closure, or bench readiness. Source ID:
+  `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-POWER-SAFETY-PACKET-REVIEW-2026-06-06`.
+- The remaining four board/interface/XBee packets (`rlxsc-esp32-client-node`,
+  `rlxsc-lcd-20x4-i2c`, `rlxsc-rotary-encoder`, and
+  `rlxsc-xbee-pro-s3b`) have a parent records-only docs review/tracking pass.
+  This does not prove exact hardware identity, submodule commit state,
+  parent-pinned state, measurements, pin readiness, RF readiness,
+  compatibility, firmware readiness, or bench readiness. Source ID:
+  `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-BOARD-INTERFACE-XBEE-PACKET-REVIEW-2026-06-06`.
+- All seven identity-intake packets now have submodule-local docs/records-only
+  review records in current dirty submodule worktrees. This does not prove
+  exact hardware identity, committed submodule state, parent-pinned state,
+  source closure, measurements, compatibility, safety closure, pin readiness,
+  RF readiness, firmware readiness, or bench readiness. Source ID:
+  `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-SUBMODULE-LOCAL-REVIEW-2026-06-06`.
 
 ## Assumptions
 
@@ -32,15 +57,19 @@
 
 ## Development order
 
-1. Complete source-backed hardware identity intake in each private submodule.
-2. Prioritize power and safety review in `rlxsc-18650-cell`,
+1. Commit the current submodule-local identity-intake and local-review records
+   only with explicit submodule commit authority.
+2. Later parent-pin reviewed submodule commits only with explicit parent
+   pointer authority.
+3. Continue exact power and safety evidence collection in `rlxsc-18650-cell`,
    `rlxsc-bms-protection`, and
    `rlxsc-solar-charger-power-path`.
-3. Then review board and interface risks in `rlxsc-esp32-client-node`,
+4. Continue exact board and interface evidence collection in
+   `rlxsc-esp32-client-node`,
    `rlxsc-lcd-20x4-i2c`, `rlxsc-rotary-encoder`, and
    `rlxsc-xbee-pro-s3b`.
-4. Write parent hardware ADRs only after submodule evidence exists.
-5. Keep any early behavior prototype host-only and outside hardware evidence
+5. Write parent hardware ADRs only after submodule evidence exists.
+6. Keep any early behavior prototype host-only and outside hardware evidence
    submodules.
 
 ## Unknowns

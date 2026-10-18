@@ -45,6 +45,10 @@
   `CbbsHardwareToolsWindows`. Generated manifest identities and capabilities
   remain local debug template facts only.
 - The Android/iOS/browser scaffold remains host-only and fixture-backed.
+- BBS UI Client-1 static/simulated browser proof is recorded under
+  `SRC-LOCAL-BBS-UI-CLIENT1-STATIC-BROWSER-PROOF-2026-06-05`. It uses
+  host-only Expo static export, loopback screenshots, console/network logs,
+  bundle inventory, and cleanup proof only.
 
 ## App Contract
 
@@ -102,6 +106,10 @@ or start network/file-transfer behavior.
 ## Current Scaffold
 
 - `apps/cbbs-client/`: Expo Router Android/iOS/browser fixture app.
+  Client-1 static browser proof aligns this package to Expo SDK 56 patch
+  dependencies (`expo` `56.0.9`, `expo-router` `56.2.9`, and
+  `@expo/metro-runtime` `56.0.14`) and validates static loopback browser proof
+  only.
 - `apps/cbbs-windows/`: Windows Client/Sysop source model with W2 RNW package
   dependencies, W2.1 local shell source/tests, W3A Windows prerequisite proof,
   W3B generated native project files, and W4A pre-release source/record
@@ -154,6 +162,10 @@ signing, release, deploy, simulator/device run, Expo Go proof, live network, BLE
 Bluetooth, Web Serial, SoftAP, serial write, RF/XBee action, relay, flash,
 erase, monitor, persistent config, router/admin mutation, MicroSD, TFT, wiring,
 load, or mains action is authorized by this project page.
+
+Client-1 does not change that boundary: it accepts no live browser/device
+connectivity, selected-board identity, native runtime, BLE, Web Bluetooth,
+Web Serial, SoftAP/LAN discovery, release, or hardware proof.
 
 Windows W3B authorizes only reviewed native generation for
 `apps/cbbs-windows`; W4A authorizes only source/record refresh, app component

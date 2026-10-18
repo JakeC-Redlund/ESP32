@@ -36,6 +36,10 @@ instructions, or ESP32 pin assignments.
 - [Existing XBee profile](../../../hardware-profiles/xbee/xbp9b-dput-001/README.md)
 - [Source ledger](../../../knowledge-base/source-ledger/2026-05-26-remote-lcd-xbee-solar-client.md)
 - [Separate hardware stream source ledger](../../../knowledge-base/source-ledger/2026-05-26-remote-lcd-xbee-solar-client-separate-hardware-stream.md)
+- [Parent status consolidation source ledger](../../../knowledge-base/source-ledger/2026-06-06-remote-lcd-xbee-solar-client-parent-status-consolidation.md)
+- [Power/safety packet review source ledger](../../../knowledge-base/source-ledger/2026-06-06-remote-lcd-xbee-solar-client-power-safety-packet-review.md)
+- [Board/interface/XBee packet review source ledger](../../../knowledge-base/source-ledger/2026-06-06-remote-lcd-xbee-solar-client-board-interface-xbee-packet-review.md)
+- [Submodule local review source ledger](../../../knowledge-base/source-ledger/2026-06-06-remote-lcd-xbee-solar-client-submodule-local-review.md)
 
 ## Verified facts
 
@@ -50,6 +54,35 @@ instructions, or ESP32 pin assignments.
   from ESP-NOW BBS, Win31/DOS-C, Gate F runtime, Gate G export, Gate H proof,
   mesh, BLE, network, relay, TFT, MicroSD, load, and mains work. Source ID:
   `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-SEPARATE-HARDWARE-STREAM-2026-05-26`.
+- All seven private `rlxsc-*` submodule worktrees contain current
+  `docs/identity-intake.md` packet files. This is same-session dirty worktree
+  evidence only; it does not prove committed submodule state, parent-pinned
+  submodule state, exact hardware identity, selected parts, measurements, or
+  bench readiness. Source ID:
+  `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-SUBMODULE-IDENTITY-WORKTREE-CONSOLIDATION-2026-06-06`.
+- The first three priority power/safety identity-intake packets
+  (`rlxsc-18650-cell`, `rlxsc-bms-protection`, and
+  `rlxsc-solar-charger-power-path`) have been reviewed and tracked as
+  docs/records-only packet structures in current dirty submodule worktrees.
+  This does not prove exact hardware identity, committed submodule state,
+  parent-pinned state, measurements, compatibility, power/safety closure, or
+  bench readiness. Source ID:
+  `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-POWER-SAFETY-PACKET-REVIEW-2026-06-06`.
+- The remaining four board/interface/XBee identity-intake packets
+  (`rlxsc-esp32-client-node`, `rlxsc-lcd-20x4-i2c`,
+  `rlxsc-rotary-encoder`, and `rlxsc-xbee-pro-s3b`) have been reviewed and
+  tracked as docs/records-only packet structures in current dirty submodule
+  worktrees. This does not prove exact hardware identity, committed submodule
+  state, parent-pinned state, pin readiness, RF readiness, measurements,
+  compatibility, firmware readiness, or bench readiness. Source ID:
+  `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-BOARD-INTERFACE-XBEE-PACKET-REVIEW-2026-06-06`.
+- All seven identity-intake packets now also have submodule-local
+  docs/records-only review records in current dirty submodule worktrees. This
+  does not prove committed submodule state, parent-pinned state, exact hardware
+  identity, selected parts, source closure, measurements, compatibility,
+  safety closure, pin readiness, RF readiness, firmware readiness, or bench
+  readiness. Source ID:
+  `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-SUBMODULE-LOCAL-REVIEW-2026-06-06`.
 - Digi identifies `XBP9B-DPUT-001` as an XBee-PRO 900HP S3B
   Point2Multipoint, 900 MHz, 250 mW, U.FL, 10 kbps model. Source ID:
   `SRC-DIGI-XBP9B-DPUT-001`.

@@ -14,10 +14,6 @@ from scaffold_audit_data import ROOT
 
 FRONTMATTER_RE = re.compile(r"\A---\n(.*?)\n---\n", re.DOTALL)
 FIELD_RE = re.compile(r"^([A-Za-z0-9_-]+)\s*:\s*(.*)$")
-PLUGIN_SKILL_RE = re.compile(
-    r"(?P<path>/home/cyber/\.codex/plugins/cache/openai-curated/"
-    r"(?P<plugin>[^/]+)/(?P<hash>[^/]+)/skills/(?P<skill>[^`\s|]+))"
-)
 MAX_DESCRIPTION_CHARS = 420
 REQUIRED_LOCAL_SKILLS = {
     "esp32-live-gate-coordinator",
@@ -113,29 +109,51 @@ def audit_configured_skill_paths(root: Path = ROOT) -> list[str]:
     return failures
 
 
-def audit_plugin_cache_inventory(root: Path = ROOT) -> list[str]:
+def audit_skill_inventory(root: Path = ROOT) -> list[str]:
     failures: list[str] = []
     inventory_path = root / "research" / "skills" / "available-skills.md"
+    if not inventory_path.is_file():
+        return ["research/skills/available-skills.md is missing"]
     text = _read(inventory_path)
-    matches = list(PLUGIN_SKILL_RE.finditer(text))
-    if not matches:
-        return failures
-    for match in matches:
-        path = Path(match.group("path"))
-        if path.exists():
-            continue
-        plugin = match.group("plugin")
-        skill = match.group("skill")
-        candidates = sorted(Path("/home/cyber/.codex/plugins/cache/openai-curated").glob(f"{plugin}/*/skills/{skill}"))
-        candidate_text = ", ".join(str(candidate) for candidate in candidates) or "none"
-        failures.append(
-            "research/skills/available-skills.md references stale plugin skill path "
-            f"{path}; current candidates: {candidate_text}"
-        )
-    if "drift-prone" not in text:
-        failures.append("research/skills/available-skills.md must mark plugin cache paths as drift-prone")
+    if "optional host discovery is not evaluated" not in text.lower():
+        failures.append("skill inventory must distinguish source validation from optional host discovery")
     if "SRC-LOCAL-CODEX-SKILL-INVENTORY-2026-06-05" not in text:
-        failures.append("research/skills/available-skills.md missing same-session skill inventory source ID")
+        failures.append("skill inventory must retain its dated source provenance")
+    if "/plugins/cache/" in text:
+        failures.append("active skill inventory must use host identities, not version-pinned cache locators")
+    seen: set[str] = set()
+    project_names: set[str] = set()
+    for number, line in enumerate(text.splitlines(), 1):
+        if not line.startswith("|"):
+            continue
+        cells = [value.strip().strip("`") for value in line.strip().strip("|").split("|")]
+        if cells[0] == "Skill" or all(re.fullmatch(r"[-:\s]+", value) for value in cells):
+            continue
+        if len(cells) != 5:
+            failures.append(f"skill inventory row {number} must declare skill, scope, locator, availability and use")
+            continue
+        name, scope, locator, availability, use = cells
+        if not re.fullmatch(r"[a-z0-9][a-z0-9:_-]*", name) or name in seen or not use:
+            failures.append(f"skill inventory row {number} has an invalid/duplicate identity or empty use")
+        seen.add(name)
+        if scope == "project_required":
+            project_names.add(name)
+            expected = f".codex/skills/{name}"
+            if locator != expected or availability != "source_checked":
+                failures.append(f"project skill {name} needs its repository-relative source contract")
+                continue
+            skill_md = root / locator / "SKILL.md"
+            if not skill_md.resolve().is_relative_to(root.resolve()) or not skill_md.is_file():
+                failures.append(f"required inventory skill source missing or outside repository: {name}")
+            elif _frontmatter(skill_md).get("name") != name:
+                failures.append(f"required inventory skill identity differs from frontmatter: {name}")
+        elif scope == "host_optional":
+            if locator != f"session-catalog:{name}" or availability != "not_evaluated":
+                failures.append(f"optional host skill {name} cannot claim installation/discovery or a fixed local path")
+        else:
+            failures.append(f"skill inventory row {number} has a missing or unknown scope")
+    for name in sorted(REQUIRED_LOCAL_SKILLS - project_names):
+        failures.append(f"skill inventory lacks required project identity: {name}")
     return failures
 
 
@@ -143,7 +161,7 @@ def audit_skills(root: Path = ROOT) -> list[str]:
     failures: list[str] = []
     failures.extend(audit_project_skill_frontmatter(root))
     failures.extend(audit_configured_skill_paths(root))
-    failures.extend(audit_plugin_cache_inventory(root))
+    failures.extend(audit_skill_inventory(root))
     return failures
 
 
@@ -153,7 +171,7 @@ def main() -> int:
         for failure in failures:
             print(f"FAIL: {failure}")
         return 1
-    print("PASS: ESP32 skill audit succeeded")
+    print("PASS: ESP32 skill source contracts succeeded; optional host discovery is not evaluated")
     return 0
 
 

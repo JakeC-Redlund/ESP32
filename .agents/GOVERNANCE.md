@@ -116,9 +116,11 @@
 
 ## Current status
 
-- Repository status: scaffold initialized, no firmware implementation.
-- Framework status: workspace-neutral; `four-relay-xbee-wifi` has an accepted
-  ESP-IDF v6.0.1 target in ADR-0002.
+- Repository status: scaffold plus bounded firmware source/build targets;
+  source acceptance does not establish live hardware or runtime acceptance.
+- Framework status: workspace-neutral by default; `four-relay-xbee-wifi`
+  (ADR-0002) and `espnow-bbs` (ADR-0003) have accepted project-local
+  ESP-IDF v6.0.1 targets.
 - Hardware status: photographed `four-relay-xbee-wifi` target profiles added;
   physical bench verification pending.
 - Agent-process status: tiered multi-agent triage is the default workspace

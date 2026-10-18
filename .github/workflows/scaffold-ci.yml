@@ -12,6 +12,29 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  scaffold-audit-matrix:
+    name: Scaffold audit (${{ matrix.audit }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        audit:
+          - paths
+          - sources
+          - docs
+          - firmware
+          - pages
+          - react_native
+          - agent_process
+          - skills
+          - records
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Run scaffold audit group
+        run: PYTHONDONTWRITEBYTECODE=1 python3 scripts/verify_scaffold.py --audit "${{ matrix.audit }}"
+
   scaffold:
     runs-on: ubuntu-latest
     steps:
@@ -33,6 +56,7 @@ jobs:
           python3 -m json.tool docs/projects/four-relay-xbee-wifi/ui/manifest.json >/dev/null
           node --check site/github-pages/app.js
           node --check docs/projects/four-relay-xbee-wifi/ui/app.js
+          node --check scripts/browser_qa_prototype_packet.js
 
       - name: Set up Node for React Native workspace checks
         uses: actions/setup-node@v6
@@ -63,11 +87,15 @@ jobs:
       - name: Run scaffold-audit unittest discovery
         run: PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests/scaffold_audits -p 'test_*.py'
 
+      - name: Run public Pages browser QA
+        run: |
+          python3 scripts/build_github_pages.py --out build/github-pages
+          python3 scripts/audit_public_manifest.py
+          python3 scripts/smoke_github_pages.py
+          node scripts/browser_qa_prototype_packet.js build/github-pages
+
       - name: Run scaffold audits
         run: |
-          PYTHONDONTWRITEBYTECODE=1 python3 scripts/scaffold_audit_agent_process.py
-          PYTHONDONTWRITEBYTECODE=1 python3 scripts/scaffold_audit_skills.py
-          PYTHONDONTWRITEBYTECODE=1 python3 scripts/scaffold_audit_records.py
           PYTHONDONTWRITEBYTECODE=1 python3 scripts/git_publication_hygiene.py check --json
           PYTHONDONTWRITEBYTECODE=1 python3 scripts/verify_scaffold.py
 

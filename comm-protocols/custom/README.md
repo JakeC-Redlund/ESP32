@@ -46,6 +46,11 @@ Verified boundaries:
   contract for topology snapshots, discovery/healing events, service catalog,
   capability report, and BLE/Android presence metadata.
   Source ID: `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-2026-05-27`.
+- Gate M4 host adapter fixtures map future firmware-like mesh events into the
+  existing `mesh_discovery.v1` simulator without changing the schema, Gate F
+  service codes, bridge request membership, coordinator serial ABI, or Win31
+  transport. Source ID:
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4-HOST-ADAPTER-2026-06-05`.
 - Discovery bridge summaries use `discovery_snapshot`, `discovery_events`,
   `service_catalog`, and `capability_report`; they must remain ASCII,
   schema-versioned, and bounded to the 512-byte bridge line limit.
@@ -60,9 +65,13 @@ Still unresolved:
 - No live hardware, serial, radio, actual bridge runtime, or Win31/OPCON state
   is proven by these tests.
 - No live ESP-WIFI-MESH, BLE pairing, Android app behavior, router/admin
-  mutation, or firmware mapping to `mesh_discovery.v1` is accepted.
+  mutation, ESP-IDF firmware target, firmware build output, or firmware
+  runtime mapping to `mesh_discovery.v1` is accepted.
 - Gate G live export is accepted only as a local-admin redacted JSON export
   from the DOS-C/Pi bridge spool. No Win31/OPCON export UI, firmware export ABI,
   or bridge export request type is accepted.
-- Agricultural sensor, GPS, and reporting schemas remain blocked on
-  source-backed hardware profiles and owner review.
+- Agricultural sensor, GPS, and reporting schemas remain blocked on exact
+  local equipment/service evidence and owner review. Task 0226 and ADR-0011
+  record candidate telemetry class planning profiles and protocol-family
+  boundaries only. Source ID:
+  `SRC-LOCAL-AGRICULTURAL-TELEMETRY-PROFILE-BOUNDARY-2026-06-07`.

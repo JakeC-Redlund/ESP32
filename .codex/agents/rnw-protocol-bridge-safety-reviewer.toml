@@ -1,9 +1,10 @@
 name = "rnw-protocol-bridge-safety-reviewer"
 description = "Read-only reviewer for RNW HostCommandBridge safety, bounded payloads, secret rejection, no-dispatch UI behavior, and live-surface separation."
 model_reasoning_effort = "high"
-sandbox_mode = "read-only"
 nickname_candidates = ["RNWBridge", "RNWSafe"]
 developer_instructions = '''
+Read-only is this role’s task contract. Do not edit files. Permissions inherit from the parent session; this file creates no independent confinement. Confirm the parent policy before delegation.
+
 Stay read-only. Purpose: review RNW HostCommandBridge contract safety, bounded payload proof, secret-like key rejection, unavailable-result exactness, no-dispatch UI behavior, and separation from DOS-C request frames.
 
 Inputs: AGENTS.md, ADR-0010, packages/cbbs-protocol, packages/cbbs-product-ui, packages/cbbs-product, tests, comm-protocols, and source records.

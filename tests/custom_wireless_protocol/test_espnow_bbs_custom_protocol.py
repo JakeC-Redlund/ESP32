@@ -26,6 +26,7 @@ from espnow_bbs_custom_protocol import (  # noqa: E402
     DISCOVERY_ADMIN_GATE,
     DISCOVERY_BRIDGE_REQUEST_TYPES,
     DISCOVERY_EVENT_TYPES,
+    DISCOVERY_SECRET_FIELD_MARKERS,
     DISCOVERY_MODE,
     DISCOVERY_SCHEMA_VERSION,
     DISCOVERY_TRANSPORT,
@@ -58,6 +59,14 @@ from espnow_bbs_runtime import (  # noqa: E402
     PacketJob,
     RuntimeConfig,
     RuntimeScheduler,
+)
+from espnow_bbs_mesh_adapter import (  # noqa: E402
+    M4_ADAPTER_MODE,
+    M4_ADAPTER_SCHEMA,
+    apply_mesh_adapter_events,
+    discovery_invariance_snapshot,
+    m4_adapter_review_report,
+    m4_fixture_events,
 )
 
 
@@ -1262,6 +1271,119 @@ class CustomWirelessProtocolTests(unittest.TestCase):
         )
         self.assertFalse(blocked["accepted"])
         self.assertEqual(blocked["reason"], "state_changing_command_blocked")
+
+    def test_m4_mesh_adapter_applies_every_event_vector(self) -> None:
+        simulator = ProtocolSimulator()
+        proof = apply_mesh_adapter_events(simulator, m4_fixture_events())
+        events = [event["event"] for event in simulator.discovery_event_log]
+
+        self.assertEqual(proof["schema"], M4_ADAPTER_SCHEMA)
+        self.assertEqual(proof["discovery_schema"], DISCOVERY_SCHEMA_VERSION)
+        self.assertEqual(proof["mode"], M4_ADAPTER_MODE)
+        self.assertTrue(proof["simulator_only"])
+        self.assertLessEqual(len(encode_bridge_frame(proof)) - 1, BRIDGE_MAX_LINE_BYTES)
+        for event_type in sorted(DISCOVERY_EVENT_TYPES):
+            with self.subTest(event_type=event_type):
+                self.assertIn(event_type, events)
+        self.assertEqual(simulator.discovery_nodes["peer01"].health, "lost")
+        self.assertEqual(simulator.discovery_summary()["heal"], "observed")
+
+    def test_m4_mesh_adapter_max_bridge_summaries_fit_line_budget(self) -> None:
+        simulator = ProtocolSimulator()
+        apply_mesh_adapter_events(
+            simulator,
+            (
+                *m4_fixture_events(),
+                {
+                    "event": "node_seen",
+                    "node": "peer02",
+                    "role": "child",
+                    "layer": 2,
+                    "parent": "coord01",
+                    "root": "coord01",
+                    "rssi": -55,
+                    "seen_ms": 200,
+                    "health": "ok",
+                    "services": ["telemetry", "node_status"],
+                    "capabilities": ["mesh_child", "route_leaf"],
+                },
+                {
+                    "event": "node_seen",
+                    "node": "peer03",
+                    "role": "child",
+                    "layer": 2,
+                    "parent": "coord01",
+                    "root": "coord01",
+                    "rssi": -57,
+                    "seen_ms": 300,
+                    "health": "ok",
+                    "services": ["file_xfer", "custody_ack"],
+                    "capabilities": ["mesh_child", "route_table"],
+                },
+            ),
+        )
+
+        responses = (
+            simulator.discovery_snapshot(limit=4),
+            simulator.discovery_events(limit=8),
+            simulator.service_catalog(limit=8),
+            simulator.capability_report(),
+            m4_adapter_review_report(RuntimeScheduler(simulator=simulator)),
+        )
+        for response in responses:
+            with self.subTest(response_type=response["type"]):
+                self.assertLessEqual(len(encode_bridge_frame(response)) - 1, BRIDGE_MAX_LINE_BYTES)
+                assert_no_discovery_secrets(response)
+
+    def test_m4_mesh_adapter_rejects_secret_markers_recursively(self) -> None:
+        for marker in sorted(DISCOVERY_SECRET_FIELD_MARKERS):
+            with self.subTest(marker=marker):
+                with self.assertRaisesRegex(ProtocolError, "secret_field_blocked"):
+                    assert_no_discovery_secrets({"outer": [{"inner": {marker: "blocked"}}]})
+
+        for marker in ("root_key", "session_token", "wifi_password", "mesh_secret"):
+            with self.subTest(marker=marker):
+                with self.assertRaisesRegex(ProtocolError, "secret_field_blocked"):
+                    assert_no_discovery_secrets({"fixture": {marker: "blocked"}})
+
+    def test_m4_mesh_adapter_rejects_live_actions_through_both_bridge_surfaces(self) -> None:
+        simulator = ProtocolSimulator()
+        runtime = RuntimeScheduler()
+
+        for message_type in sorted(BLOCKED_LIVE_REQUEST_TYPES):
+            with self.subTest(surface="process_bridge_request", message_type=message_type):
+                blocked = process_bridge_request(
+                    {"v": BRIDGE_PROTOCOL_VERSION, "type": message_type},
+                    simulator,
+                )
+                self.assertFalse(blocked["accepted"])
+                self.assertEqual(blocked["reason"], "state_changing_command_blocked")
+            with self.subTest(surface="runtime", message_type=message_type):
+                blocked = runtime.submit_bridge_frame(
+                    {"v": BRIDGE_PROTOCOL_VERSION, "type": message_type}
+                )
+                self.assertFalse(blocked["accepted"])
+                self.assertEqual(blocked["reason"], "state_changing_command_blocked")
+
+    def test_m4_mesh_adapter_discovery_requests_preserve_queue_custody_and_abi(self) -> None:
+        runtime = RuntimeScheduler()
+        before = discovery_invariance_snapshot(runtime)
+
+        for frame in (
+            {"v": BRIDGE_PROTOCOL_VERSION, "type": "discovery_snapshot", "limit": 4},
+            {"v": BRIDGE_PROTOCOL_VERSION, "type": "discovery_events", "limit": 8},
+            {"v": BRIDGE_PROTOCOL_VERSION, "type": "service_catalog", "limit": 8},
+            {"v": BRIDGE_PROTOCOL_VERSION, "type": "capability_report"},
+        ):
+            response = runtime.submit_bridge_frame(frame)
+            self.assertEqual(response["schema"], DISCOVERY_SCHEMA_VERSION)
+            self.assertLessEqual(len(encode_bridge_frame(response)) - 1, BRIDGE_MAX_LINE_BYTES)
+
+        after = discovery_invariance_snapshot(runtime)
+        self.assertEqual(after, before)
+        self.assertTrue(DISCOVERY_BRIDGE_REQUEST_TYPES.isdisjoint(BRIDGE_REQUEST_TYPES))
+        self.assertNotIn("mesh_discovery", SERVICE_CODES)
+        self.assertNotIn("discovery_snapshot", SERVICE_CODES)
 
 
 if __name__ == "__main__":

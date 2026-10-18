@@ -84,6 +84,19 @@ REQUIRED_SOURCE_IDS = [
 ]
 
 
+def agent_permission_contract_errors(data: dict, label: str) -> list[str]:
+    """A role contract is behavioral; these keys cannot confine a child agent."""
+    failures = []
+    if {"sandbox_mode", "approval_policy"} & data.keys():
+        failures.append(f"{label} declares ineffective custom-agent permission keys")
+    text = str(data.get("developer_instructions", "")).lower()
+    if "permissions inherit from the parent session" not in text:
+        failures.append(f"{label} must explain inherited parent permissions")
+    if "worker" not in str(data.get("name", "")) and "read-only" not in text:
+        failures.append(f"{label} must retain its read-only task contract")
+    return failures
+
+
 def _read(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
@@ -481,6 +494,7 @@ def audit_agent_process(root: Path = ROOT) -> list[str]:
             failures.append(f"missing agent file: {path.relative_to(root)}")
             continue
         data = tomllib.loads(_read(path))
+        failures.extend(agent_permission_contract_errors(data, str(path.relative_to(root))))
         for key in ["name", "description", "developer_instructions"]:
             if key not in data:
                 failures.append(f"{path.relative_to(root)} missing {key}")
@@ -506,8 +520,6 @@ def audit_agent_process(root: Path = ROOT) -> list[str]:
                 "Do not commit or push",
             ], profile))
         if profile in DEVELOPMENT_PANEL_AGENT_PROFILES or profile in RNW_AGENT_PROFILES:
-            if data.get("sandbox_mode") != "read-only":
-                failures.append(f"{path.relative_to(root)} must be read-only")
             failures.extend(_require_markers(text, [
                 "Purpose:",
                 "Inputs:",

@@ -10,8 +10,13 @@ Continuation record for Task 0183
 - Use
   `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-HARDWARE-INTAKE-AUDIT-2026-06-05`
   for the current status packet.
-- Start source-backed identity intake inside the private `rlxsc-*` submodules.
-  Prioritize `rlxsc-18650-cell`, `rlxsc-bms-protection`, and
+- Superseding status: Task 0218 records current dirty worktree
+  `docs/identity-intake.md` packet files in all seven private `rlxsc-*`
+  submodules. This is not committed submodule state, parent-pinned state, or
+  hardware identity closure.
+- Complete, review, track, and later parent-pin those existing packets under
+  submodule-local gates. Prioritize `rlxsc-18650-cell`,
+  `rlxsc-bms-protection`, and
   `rlxsc-solar-charger-power-path` for cell, BMS/protection, charger, panel,
   fuse/protection, enclosure, and current-limit evidence.
 - Then review `rlxsc-esp32-client-node`, `rlxsc-lcd-20x4-i2c`,

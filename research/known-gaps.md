@@ -13,8 +13,28 @@ forward.
   remain historical; the structured Gate H live acceptance and Gate G
   local-admin export records supersede earlier blocked Gate H and simulator-only
   analytics status where noted.
-- Confirm exact firmware framework requirements and constraints for projects not
-  covered by ADR-0002.
+- Planned-development completion audit: Task 0233 records a Tier 2
+  records/status cross-check under
+  `SRC-LOCAL-PLANNED-DEVELOPMENT-COMPLETION-AUDIT-2026-06-07`; Task 0234
+  aligns current status records under
+  `SRC-LOCAL-PLANNED-DEVELOPMENT-COMPLETION-STATUS-ALIGNMENT-2026-06-07`.
+  Current evidence does not support global hardware, live, or release closure.
+  Remaining lane-specific gaps still require current status-ledger evidence and
+  separately gated Tier 3 authority where applicable.
+- BBS UI Client-1 screenshot/CV corroboration: Task 0213 accepts metadata-only
+  corroboration of the ignored Task 0185 Client-1 static browser evidence
+  packet. Task 0215 records no current tracked Client-1 UI source drift beyond
+  Task 0185/Task 0213. Future later UI source changes still need copied
+  screenshot/OCR/CV corroboration; live browser/device proof, Client-2 Wi-Fi
+  proof, dummy-output proof, native runtime proof, firmware runtime proof,
+  hardware proof, release, and all flash/serial/RF/live gate authority remain
+  open.
+- Framework comparison criteria are recorded under
+  `SRC-LOCAL-FIRMWARE-FRAMEWORK-COMPARISON-2026-06-07` for projects not covered
+  by accepted project ADRs such as `ADR-0002` and `ADR-0003`. Exact
+  project-specific framework decisions remain open until a project ADR names
+  hardware identity, required APIs, version pin, build shape, dependency
+  ownership, safety gates, testability, and validation evidence.
 - Keep ESP-IDF v6.0.1 activation evidence current for
   `four-relay-xbee-wifi`: the 2026-05-21 cycle installed and built the
   disabled skeleton, but `idf.py` still requires sourcing the local activation
@@ -34,11 +54,15 @@ forward.
   `GPIO25`, `GPIO26`, `GPIO27`, and `GPIO33`.
 - Verify the exact Open-Smart R61509V TFT module, pinout, power/backlight,
   touch interface, driver path, and conflict with relay, MicroSD, XBee, ADC,
-  boot, flash, and UART0 pins.
+  boot, flash, and UART0 pins. Existing R61509V records are candidate-profile
+  lineage only under
+  `SRC-LOCAL-TFT-MICROSD-EXPANDER-INSTRUMENT-STATUS-CONSOLIDATION-2026-06-06`.
 - Verify exact CD74HC4067 breakout, select/enable wiring, ADC1 input path,
   voltage protection, source impedance, and input-only scan behavior.
 - Select and verify exact MCP23017 or TCA9555 expander board, I2C address pins,
   pullups, inactive defaults, output latch behavior, and readback policy.
+  Existing expander records are candidate-profile lineage only; no expander
+  board, address, relay driver path, or relay-output wiring is accepted.
 - Select a relay driver stage only after exact relay-module trigger polarity,
   input current, voltage compatibility, and isolation behavior are verified.
 - Confirm Heltec WiFi LoRa 32(V2) physical revision and radio chip variant.
@@ -253,13 +277,17 @@ forward.
 - Identify the SPI MicroSD reader module, 3.3 V power path, pull-ups,
   card-detect/write-protect behavior, and shield continuity for candidate
   `GPIO18`, `GPIO19`, `GPIO23`, and `GPIO32` before any storage wiring.
+  Task 0225 records only candidate-profile lineage, not reader/card selection
+  or approved wiring.
 - Define MicroSD card capacity, FAT preparation process, low-space behavior,
   log rotation, and fallback web-serving behavior for
   `four-relay-xbee-wifi`.
 - Inventory required bench instruments and fixtures for `four-relay-xbee-wifi`:
   DMM, current-limited supply, logic analyzer or LED proof fixture, USB serial
   tools, labeled harnesses, low-voltage dummy loads, and completed records
-  based on `research/bench-records/TEMPLATE.md`.
+  based on `research/bench-records/TEMPLATE.md`. Fluke/Keysight/Saleae source
+  rows are candidate instrument-class examples only, not local inventory or
+  purchase requirements.
 - Create a separate qualified-review package before any mains switching design:
   load type, enclosure, overcurrent protection, grounding/bonding, strain
   relief, GFCI/de-energization, separation, labels/disconnect, and test record.
@@ -332,23 +360,132 @@ forward.
   `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M2A-DOSC-2026-05-27`.
   Gate M3 design review is recorded in
   `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M3-DESIGN-REVIEW-2026-06-05`
-  as a source-backed mapping matrix and future M4 fixture checklist only.
-  These gates do not close live ESP-WIFI-MESH, BLE pairing, Android app,
-  router/admin, firmware runtime/build proof, flash, serial-write, PCAP, or live proof
-  gaps.
+  as a source-backed mapping matrix, and Gate M4 host adapter proof is recorded
+  in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4-HOST-ADAPTER-2026-06-05`
+  as host-only adapter fixture proof. Gate M4B build-only target proof is
+  recorded in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4B-BUILD-ONLY-TARGET-2026-06-05`
+  as inert ESP-IDF target and no-flash local build proof. Gate M4C firmware
+  contract proof is recorded in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4C-FIRMWARE-CONTRACT-2026-06-05`
+  as a pure-C firmware-side contract component and no-flash build proof. Gate
+  M4D event queue contract proof is recorded in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4D-EVENT-QUEUE-CONTRACT-2026-06-05`
+  as a caller-owned fixed-size event queue contract and no-flash build proof.
+  Gate M4E runtime/task ownership contract proof is recorded in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4E-RUNTIME-TASK-OWNERSHIP-CONTRACT-2026-06-05`
+  as a caller-owned ownership contract over the M4D queue and no-flash build
+  proof. Gate M4F dispatch plan contract proof is recorded in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4F-DISPATCH-PLAN-CONTRACT-2026-06-05`
+  as a caller-owned deterministic dispatch-plan contract. Gate M4G scheduler
+  integration contract proof is recorded in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4G-SCHEDULER-INTEGRATION-CONTRACT-2026-06-05`
+  as caller-owned scheduler profile/tick accounting over the M4F dispatch
+  plan. Gate M4H execution accounting contract proof is recorded in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4H-EXECUTION-ACCOUNTING-CONTRACT-2026-06-05`
+  as caller-owned apply/skip accounting over an already staged M4F dispatch
+  plan. Gate M4I runtime cycle contract proof is recorded in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4I-RUNTIME-CYCLE-CONTRACT-2026-06-05`
+  as caller-owned source-level composition of scheduler staging and execution
+  accounting. Gate M4J runtime scheduler design review is accepted in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4J-RUNTIME-SCHEDULER-DESIGN-2026-06-06`
+  as source-backed requirements for a later runtime scheduler source gate.
+  Gate M4K runtime scheduler source contract is accepted in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4K-RUNTIME-SCHEDULER-SOURCE-CONTRACT-2026-06-06`
+  as caller-owned source composition only. Gate M4L static task shell source is
+  accepted in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4L-STATIC-TASK-SHELL-SOURCE-CONTRACT-2026-06-06`.
+  Gate M4M startup/lifecycle requirements are accepted as design-only in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4M-STARTUP-LIFECYCLE-REQUIREMENTS-2026-06-06`.
+  Gate M4N startup lifecycle source is accepted with full validation and final
+  8/8 weighted post-review passed in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4N-STARTUP-LIFECYCLE-SOURCE-CONTRACT-2026-06-06`.
+  Gate M4O no-flash `app_main` startup integration source is accepted with full
+  validation and final 8/8 weighted post-review passed in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4O-APP-MAIN-STARTUP-INTEGRATION-2026-06-06`.
+  Gate M4P bridge summary source is accepted with full validation and final
+  8/8 weighted post-review passed after the record-alignment P2 was resolved in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4P-BRIDGE-SUMMARY-SOURCE-CONTRACT-2026-06-06`.
+  Gate M4Q local bridge request router source is accepted as a source-only
+  local router/accounting contract in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4Q-LOCAL-BRIDGE-REQUEST-ROUTER-SOURCE-CONTRACT-2026-06-06`.
+  Gate M4R local dispatch envelope source is accepted source-only with full
+  validation and final post-review passed after record-alignment remediation in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4R-BRIDGE-DISPATCH-ENVELOPE-SOURCE-CONTRACT-2026-06-06`.
+  Gate M4S caller-owned request-text intent source is accepted source-only with
+  full validation and final post-review passed after record-alignment
+  remediation in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4S-BRIDGE-FRAME-INTENT-SOURCE-CONTRACT-2026-06-06`.
+  Gate M4T volatile persistence-intent source is accepted source-only after
+  full validation and final post-review under
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4T-PERSISTENCE-INTENT-SOURCE-CONTRACT-2026-06-06`.
+  Gate M4U retained-persistence requirements are recorded design-only in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4U-RETAINED-PERSISTENCE-REQUIREMENTS-2026-06-06`;
+  the record defines future source-gate requirements but does not implement
+  NVS/file storage or reboot durability.
+  Gate M4V retained-persistence source is accepted source-only with local
+  validation and final 8/8 weighted post-review passed in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4V-RETAINED-PERSISTENCE-SOURCE-CONTRACT-2026-06-06`;
+  it adds `mesh_retained_persistence`, a fixed checkpoint codec, and NVS
+  adapter source, but does not prove live NVS execution, reboot durability, or
+  runtime persistence.
+  Gate M4W retained-recovery app-main source is accepted source-only in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4W-RETAINED-RECOVERY-APP-MAIN-SOURCE-2026-06-06`;
+  it wires storage context init, storage init, and storage load status capture
+  only, and host/focused audit/no-flash-build validation plus final 8/8 weighted
+  post-review passed.
+  Gate M4X bridge-readiness app-main source is accepted source-only after full
+  validation, post-review, and P2 record-alignment remediation in
+  `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4X-BRIDGE-READINESS-APP-MAIN-SOURCE-2026-06-06`;
+  it routes only fixed `discovery_snapshot` through accepted M4S request-text
+  intent, records local status/line bytes, and does not accept live bridge
+  dispatch or ABI changes.
+  These gates do not close live task execution proof, timer creation,
+  callbacks, queues, arbitrary bridge frame parsing, live bridge dispatch,
+  actual scheduler runtime acceptance, actual execution runtime acceptance,
+  live NVS execution proof, reboot durability, runtime persistence, firmware
+  runtime, live ESP-WIFI-MESH, BLE pairing, Android app, router/admin, flash,
+  serial-write, PCAP, or live proof gaps.
 - The BBS UI System Operation Improvement Program is recorded in
   `SRC-LOCAL-BBS-UI-SYSTEM-OPERATION-PROGRAM-2026-05-28`; UI-0 and M2-B now
   have host-only source/test proof under
-  `SRC-LOCAL-BBS-UI-UI0-M2B-HOST-SLICE-2026-05-28`. It still needs M3 firmware
-  mapping design review, Client-1 static/simulated browser evidence, copied
-  screenshot/OCR/CV corroboration for later UI changes, and a future separate
-  Tier 3 Client-2 selected-board read-only Wi-Fi gate before any live client
-  proof is accepted.
-- Select and verify agricultural telemetry hardware profiles before treating
+  `SRC-LOCAL-BBS-UI-UI0-M2B-HOST-SLICE-2026-05-28`. M3 design-only mapping,
+  M4 host-only adapter proof, M4B build-only target proof, M4C firmware
+  contract proof, M4D event queue contract proof, M4E ownership contract
+  proof, M4F dispatch-plan contract proof, M4G scheduler integration contract
+  proof, M4H execution-accounting contract proof, M4I runtime-cycle contract
+  proof, accepted M4J runtime scheduler design review, M4K accepted runtime
+  scheduler source contract, accepted M4L static task shell source contract,
+  accepted design-only M4M startup/lifecycle requirements, accepted M4N startup
+  lifecycle source with full validation and final 8/8 weighted post-review
+  passed, accepted M4O no-flash app_main startup integration source, and
+  accepted M4P bridge summary source selection, accepted M4Q local bridge
+  request router/accounting source contract, accepted source-only M4R local
+  dispatch envelope/accounting source contract, accepted source-only M4S
+  caller-owned request-text intent/accounting source contract, and accepted
+  source-only M4T volatile persistence-intent/accounting source, M4U
+  design-only retained-persistence requirements, and accepted M4V source-only
+  retained persistence adapter code are recorded.
+  Client-1
+  static/simulated browser proof is recorded in
+  `SRC-LOCAL-BBS-UI-CLIENT1-STATIC-BROWSER-PROOF-2026-06-05`. Task 0215
+  records no current tracked Client-1 UI source drift beyond Task 0185/Task
+  0213. Future later UI source changes still need copied screenshot/OCR/CV
+  corroboration, separately gated
+  live bridge dispatch/live NVS execution/runtime follow-up, and a future
+  separate Tier 3 Client-2 selected-board read-only Wi-Fi gate before any live
+  client proof is accepted.
+- Task 0226 and ADR-0011 record agricultural telemetry candidate class planning
+  profiles for center-pivot monitoring, soil sensing, and GPS asset tracking,
+  and Task 0227 records the reusable evidence-intake packet template. These
+  records do not select hardware or accept implementation. Before treating
   center-pivot controllers, soil probes, SDI-12 adapters, Modbus adapters, GPS
-  pivot positioning, or GPS asset tracking as implementation targets. Required
+  pivot positioning, or GPS asset tracking as implementation targets, fill one
+  evidence-intake packet for exact local equipment/service identity. Required
   records must include source links, power, voltage, boot-pin, isolation,
-  connector, protocol, and calibration/units notes.
+  connector, protocol/API, calibration/units, retention/redaction, and
+  live-proof notes.
 - Select and verify all `remote-lcd-xbee-solar-client` hardware before any
   wiring, charging, firmware, or radio work: exact ESP32 board, 20x4 LCD,
   rotary encoder, 18650 cell, BMS/protection board, solar panel, charger/power
@@ -358,6 +495,31 @@ forward.
 - The `remote-lcd-xbee-solar-client` private hardware submodules now exist and
   are docs-only evidence lanes. They do not close exact hardware identity,
   wiring, charging, radio-write, firmware, or live bench gaps.
+- Current dirty worktree identity-intake packet files are present in all seven
+  private `rlxsc-*` submodules under
+  `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-SUBMODULE-IDENTITY-WORKTREE-CONSOLIDATION-2026-06-06`,
+  but they are not committed submodule state, parent-pinned state, selected
+  hardware, exact identity closure, measurements, or bench readiness.
+- The first three priority power/safety packets (`rlxsc-18650-cell`,
+  `rlxsc-bms-protection`, and `rlxsc-solar-charger-power-path`) are reviewed
+  and tracked only as docs/records-only packet structures under
+  `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-POWER-SAFETY-PACKET-REVIEW-2026-06-06`.
+  Exact hardware identity, compatibility, measurements, safety closure,
+  submodule commits, parent pins, and bench readiness remain open.
+- The remaining four board/interface/XBee packets (`rlxsc-esp32-client-node`,
+  `rlxsc-lcd-20x4-i2c`, `rlxsc-rotary-encoder`, and
+  `rlxsc-xbee-pro-s3b`) are reviewed and tracked only as docs/records-only
+  packet structures under
+  `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-BOARD-INTERFACE-XBEE-PACKET-REVIEW-2026-06-06`.
+  Exact hardware identity, pin readiness, RF readiness, measurements,
+  firmware readiness, submodule commits, parent pins, and bench readiness
+  remain open.
+- All seven identity-intake packets now have submodule-local docs/records-only
+  review records under
+  `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-SUBMODULE-LOCAL-REVIEW-2026-06-06`.
+  Exact hardware identity, source closure, compatibility, measurements,
+  safety closure, pin readiness, RF readiness, firmware readiness, submodule
+  commits, parent pins, and bench readiness remain open.
 - Task 0183 records a parent hardware intake audit under
   `SRC-LOCAL-REMOTE-LCD-XBEE-SOLAR-CLIENT-HARDWARE-INTAKE-AUDIT-2026-06-05`.
   This is records-only status, not identity closure. Exact component sources,
@@ -413,30 +575,41 @@ forward.
 - Select first protocol only for lanes that do not already have accepted or
   simulator-proven protocol records; ESP-NOW BBS custom wireless work already
   has Gate B/C/D/E/F/G/H and Gate M1/M2-A records.
-- Add a checked-in browser QA script for the public Prototype Build Packet so
-  desktop/mobile rendering, decoded WebP dimensions, no console errors, no
-  failed same-origin requests, keyboard focus visibility, and no horizontal
-  overflow are covered by CI instead of local Playwright review only.
-- Add XBee API parser test vectors beyond the current escaped-frame,
-  bad-length, truncated-escape, checksum, transmit-status, AT-response, and
-  receive-packet payload host vectors.
-- Decide whether modular scaffold audits should become a CI matrix job after
-  the local-only verifier proves stable.
-- Define CI matrix after the firmware framework is selected.
+- Resolved on 2026-06-07 for generated public-artifact QA only: Task 0229 adds
+  `scripts/browser_qa_prototype_packet.js`, Pages workflow execution before
+  artifact upload, and non-deploy scaffold CI execution for desktop/mobile
+  rendering, decoded WebP dimensions, console errors, same-origin request
+  failures, keyboard focus visibility, and horizontal overflow. This does not
+  prove live deployment or publication.
+- Resolved on 2026-06-07 for host-only non-deploy CI: Task 0230 keeps
+  `scripts/verify_scaffold.py` as the aggregate local/full verifier, adds
+  `--audit <name>` single-group execution, and adds a scaffold CI matrix over
+  the verifier-owned audit group names with focused matrix drift tests.
+- Resolved on 2026-06-07 for accepted-project firmware CI only: Task 0231 adds
+  non-deploy ESP-IDF build CI for `four-relay-xbee-wifi` under `ADR-0002` and
+  `espnow-bbs` under `ADR-0003`, with ESP-IDF `v6.0.1`, target `esp32`,
+  focused workflow drift tests, and no flash/monitor/upload/deploy/release
+  authority. Framework selection and firmware CI for projects without accepted
+  ADRs remain open.
+- Resolved on 2026-06-07 for framework comparison criteria only: Task 0232 adds
+  a source-backed ESP-IDF/Arduino-ESP32/PlatformIO comparison packet and updates
+  framework-neutral status. This does not select a framework outside accepted
+  ADRs, add framework files, expand firmware CI, or open firmware runtime/live
+  gates.
 
 ## Next evidence record required
 
 | Blocker | Required evidence record before closure |
 | --- | --- |
-| Framework requirements outside ADR-0002 | Accepted ADR or explicit unresolved-gap note naming the project and blocked framework decision. |
+| Project-specific framework decision outside accepted ADRs | Accepted project ADR or explicit unresolved-gap note naming the project, exact hardware identity, required APIs, version pin, build shape, dependency ownership, safety gates, and blocked framework decision. |
 | ESP-IDF v6.0.1 toolchain | Closed for the disabled skeleton build by `SRC-LOCAL-LIVE-BENCH-PREFLIGHT-2026-05-21`; refresh if shell/toolchain state changes. Future flash/JTAG work still needs physical no-load evidence, recovery record, and OpenOCD/udev review. |
 | Exact ESP32 board and expansion shield | Physical inspection record with board markings, USB-UART marking, regulator marking, jumper position, continuity notes, and source links where available. |
 | Power entry and protection | Bench power record with selected input source, rail measurements, current-limit setting, brownout observation, reverse-protection decision, overcurrent candidate, TVS/ESD candidate, and test points. |
 | Four-channel relay module | Module identity record with manufacturer/model markings, input voltage, trigger polarity, 3.3 V input current measurement, `JD-VCC`/`VCC` behavior, isolation notes, and contact-rating source. |
 | Direct GPIO relay gate | Low-voltage proof record for `GPIO25`, `GPIO26`, `GPIO27`, and `GPIO33` showing no load/mains connection and measured relay-input behavior. |
-| Open-Smart R61509V TFT | Module identity and pin-pressure record with exact pinout, supply/backlight requirements, touch interface, driver path, and shared pin-budget impact. |
+| Open-Smart R61509V TFT | Task 0225 records candidate-profile lineage only; closure still requires module identity and pin-pressure record with exact pinout, supply/backlight requirements, touch interface, driver path, and shared pin-budget impact. |
 | CD74HC4067 mux | Breakout identity and input-only scan record with select/enable wiring, ADC1 path, voltage protection, source impedance, and no relay-output claims. |
-| MCP23017 or TCA9555 expander | Expander board identity record with address pins, pullups, inactive default, latch/readback behavior, and driver-stage boundary. |
+| MCP23017 or TCA9555 expander | Task 0225 records candidate-profile lineage only; closure still requires expander board identity record with address pins, pullups, inactive default, latch/readback behavior, and driver-stage boundary. |
 | Relay driver stage | Driver selection record tied to measured relay input polarity, input current, voltage compatibility, and isolation behavior. |
 | Heltec WiFi LoRa 32(V2) | Physical revision record with board photos/markings and radio-chip/source confirmation. |
 | Waveshare XBee USB Adapter | Adapter/carrier record with serial port, UART voltage, DIN/DOUT routing, and PC-dock versus ESP32-mounted-carrier decision. |
@@ -449,18 +622,28 @@ forward.
 | Four-relay rotary encoder PF0530U post-flash actuation proof | `SRC-LOCAL-FOUR-RELAY-KY040-BBS-LCD-MENU-PF0530U-LIVE-2026-06-02` records PF0530U written and verify-flashed on COM6 with readiness proof for `PF0530U`, `BBS_INPUT_READY cal=responsive-v7`, `step=1`, LCD render, GPIO config, and heartbeat. PF0530U keeps GPIO13/GPIO14/GPIO32 input-only and LCD GPIO21/GPIO22 display-only, disables interrupt-fed decoding and raw edge logging, uses 2 ms polling, detent-gated one-transition steps, and 25 ms lockout. Two PF0530U post-flash read-only monitor windows captured zero physical input events, so final PF0530U knob/switch actuation proof remains open until a read-only monitor is run while the operator actively moves the encoder. |
 | Four-relay rotary encoder PF0530V PCNT live proof and user acceptance | `SRC-LOCAL-FOUR-RELAY-KY040-BBS-LCD-MENU-PF0530V-PCNT-SOURCE-BUILD-2026-06-02`, `SRC-LOCAL-FOUR-RELAY-KY040-BBS-LCD-MENU-PF0530V-LIVE-2026-06-02`, and `SRC-LOCAL-FOUR-RELAY-KY040-BBS-LCD-MENU-PF0530V-USER-ACCEPTANCE-2026-06-02` record the accepted PCNT encoder baseline that moves A/B rotation to ESP-IDF PCNT quadrature counting while keeping GPIO13/GPIO14/GPIO32 input-only and LCD GPIO21/GPIO22 display-only. PF0530V is written and separately verify-flashed on COM6 with `cal=pcnt-v1`, `decoder=pcnt`, `irq=pcnt`, `poll_decoder=0`, `ENC_PCNT_READY`, `ENC_PCNT_HB`, LCD/input readiness, PCNT/menu/render heartbeats, 4 MB rollback backup with private hashes retained only in ignored local evidence, read-only transcript scan, cleanup proof, and zero crash/unsafe markers. After that gate, the user stated `ENCODER FUNCTIONALITY CONFIRMED AND APPROVED BY USER`, accepting PF0530V real LCD menu encoder functionality. Remaining gap: post-confirmation transcript-count characterization for PCNT direction/counts-per-detent behavior, `BBS_MENU_STEP`, short/long `BBS_MENU_SELECT`, and quantified runaway tolerance is not captured unless a future read-only monitor is requested. |
 | Four-relay LCD visual-art PF0530W proof | `SRC-LOCAL-FOUR-RELAY-KY040-BBS-LCD-MENU-PF0530W-VISUAL-ART-2026-06-02` and `SRC-LOCAL-FOUR-RELAY-KY040-BBS-LCD-MENU-PF0530W-LIVE-2026-06-02` record the firmware-visible LCD visual-art source/build and COM6 write/verify/readiness gate. `SRC-LOCAL-FOUR-RELAY-KY040-BBS-LCD-MENU-PF0530W-ART-CAROUSEL-2026-06-02` records source/build ART-carousel behavior, and `SRC-LOCAL-FOUR-RELAY-KY040-BBS-LCD-MENU-PF0530W-HOST-ONLY-VALIDATION-2026-06-05` records host-only simulator/catalog validation for the five-panel carousel. Remaining gap: physical ART page visual acceptance, current COM6/device state, and live ART render telemetry are not captured because the live monitors stayed on HOME with no physical encoder input and Task 0181 was host-only. |
-| MicroSD reader and card policy | Reader identity and card-prep record with 3.3 V path, pullups, card-detect/write-protect behavior, shield continuity, capacity, FAT preparation, low-space handling, rotation, and fallback behavior. |
-| Bench instruments and fixtures | Instrument inventory record covering DMM, current-limited supply, logic analyzer or LED proof fixture, USB serial tools, labeled harnesses, low-voltage dummy loads, and calibration/identity notes. |
+| MicroSD reader and card policy | Task 0225 records candidate-profile lineage only; closure still requires reader identity and card-prep record with 3.3 V path, pullups, card-detect/write-protect behavior, shield continuity, capacity, FAT preparation, low-space handling, rotation, and fallback behavior. |
+| Bench instruments and fixtures | Task 0225 records candidate instrument-class lineage only; closure still requires instrument inventory record covering DMM, current-limited supply, logic analyzer or LED proof fixture, USB serial tools, labeled harnesses, low-voltage dummy loads, and calibration/identity notes. |
 | Qualified mains package | Qualified-review package for load type, enclosure, overcurrent protection, grounding/bonding, strain relief, GFCI/de-energization, separation, labels/disconnect, and test record. |
 | First flashing target board | Flash target and recovery record with exact board, boot/recovery method, toolchain proof, and rollback path. |
 | ESP-NOW BBS coordinator/client lane | Closed for the first one-coordinator/one-peer encrypted proof by `SRC-LOCAL-ESPNOW-ENCRYPTED-PEER-2026-05-22`. `SRC-LOCAL-ESPNOW-LIVE-GATE-TOOLING-2026-05-23` adds tooling for the three-peer gate, `SRC-LOCAL-ESPNOW-THREE-PEER-LIVE-ATTEMPT-2026-05-23` records the initial coordinator backup CRC/checksum blocker plus the corrected USB-only three-peer live completion with backups, build hashes, flash/verify evidence, three `espnow-enc` peers, moving RX/TX/ACK counters, and cleanup, and `SRC-LOCAL-WIN31-DASHBOARD-ML-LIVE-GATE-2026-05-23` adds a copied-evidence completion gate only. Future evidence is still required for chunked message delivery, provisioning UX, BLE, ESP-WIFI-MESH, any physical wiring beyond USB-only, or any new live acceptance claim. |
-| Custom wireless protocol implementation | Gate B simulator proof exists in `SRC-LOCAL-ESPNOW-CUSTOM-WIRELESS-PROTOCOL-SIM-2026-05-25`, Gate C bridge-adapter proof exists in `SRC-LOCAL-ESPNOW-CUSTOM-WIRELESS-PROTOCOL-BRIDGE-SIM-2026-05-25`, Gate D DOS-C fixture replay exists in `SRC-LOCAL-ESPNOW-CUSTOM-WIRELESS-PROTOCOL-GATE-D-DOSC-PAIRING-2026-05-25`, Gate E draft bridge ABI candidate exists in `SRC-LOCAL-ESPNOW-CUSTOM-WIRELESS-PROTOCOL-GATE-E-BRIDGE-ABI-2026-05-25`, Gate F owner-review design-contract acceptance exists in `SRC-LOCAL-ESPNOW-CUSTOM-WIRELESS-PROTOCOL-GATE-F-FIRMWARE-ABI-2026-05-26` and `SRC-LOCAL-ESPNOW-CUSTOM-WIRELESS-PROTOCOL-GATE-F-OWNER-REVIEW-2026-05-26`, Gate F host-only packet golden vectors exist in `SRC-LOCAL-ESPNOW-CUSTOM-WIRELESS-PROTOCOL-GATE-F-GOLDEN-VECTORS-2026-05-26`, Gate F requirements-only runtime planning exists in `SRC-LOCAL-ESPNOW-CUSTOM-WIRELESS-PROTOCOL-GATE-F-RUNTIME-REQUIREMENTS-2026-05-26`, Gate M1 full-service mesh discovery host contract exists in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-2026-05-27`, Gate M2-A DOS-C companion bridge/operator support exists in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M2A-DOSC-2026-05-27`, Gate M3 design review exists in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M3-DESIGN-REVIEW-2026-06-05`, Gate G simulator-only analytics exists in `SRC-LOCAL-ESPNOW-CUSTOM-WIRELESS-PROTOCOL-GATE-G-ANALYTICS-2026-05-25`, Gate G live export policy is accepted in `SRC-LOCAL-ESPNOW-GATE-G-LIVE-EXPORT-POLICY-2026-05-25`, Gate G local-admin redacted export implementation exists in `SRC-LOCAL-ESPNOW-GATE-G-LIVE-EXPORT-IMPLEMENTATION-2026-05-25`, Gate H live acceptance exists in `SRC-LOCAL-ESPNOW-CUSTOM-WIRELESS-PROTOCOL-GATE-H-LIVE-ACCEPTANCE-2026-05-25`, the structured transcript shape exists in `SRC-LOCAL-ESPNOW-GATE-H-STRUCTURED-TRANSCRIPT-2026-05-25`, and structured Gate H live acceptance exists in `SRC-LOCAL-ESPNOW-GATE-H-STRUCTURED-LIVE-ACCEPTANCE-2026-05-25`; future evidence is still required for firmware runtime implementation, firmware persistence, firmware mesh discovery build/runtime proof, Win31 export controls, and any live bridge export request type. |
-| BBS UI system operation improvement program | UI-0 ranked improvement packet and M2-B host-only Network/Services source proof now exist under `SRC-LOCAL-BBS-UI-UI0-M2B-HOST-SLICE-2026-05-28`; M3 firmware mapping design review/fixtures now exist under `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M3-DESIGN-REVIEW-2026-06-05`. Remaining gaps are Client-1 static/simulated or read-only browser proof with screenshots and logs, copied screenshot/OCR/CV corroboration for later UI changes, future M4 build-only adapter proof, and future Client-2 Tier 3 selected-board read-only Wi-Fi proof with same-session identity, power/voltage/boot-pin/isolation, recovery, browser evidence, and cleanup. Dummy-output control needs a later explicit GPIO/fixture/no-load/no-relay/no-mains record. |
+| Custom wireless protocol implementation | Gate B simulator proof exists in `SRC-LOCAL-ESPNOW-CUSTOM-WIRELESS-PROTOCOL-SIM-2026-05-25`, Gate C bridge-adapter proof exists in `SRC-LOCAL-ESPNOW-CUSTOM-WIRELESS-PROTOCOL-BRIDGE-SIM-2026-05-25`, Gate D DOS-C fixture replay exists in `SRC-LOCAL-ESPNOW-CUSTOM-WIRELESS-PROTOCOL-GATE-D-DOSC-PAIRING-2026-05-25`, Gate E draft bridge ABI candidate exists in `SRC-LOCAL-ESPNOW-CUSTOM-WIRELESS-PROTOCOL-GATE-E-BRIDGE-ABI-2026-05-25`, Gate F owner-review design-contract acceptance exists in `SRC-LOCAL-ESPNOW-CUSTOM-WIRELESS-PROTOCOL-GATE-F-FIRMWARE-ABI-2026-05-26` and `SRC-LOCAL-ESPNOW-CUSTOM-WIRELESS-PROTOCOL-GATE-F-OWNER-REVIEW-2026-05-26`, Gate F host-only packet golden vectors exist in `SRC-LOCAL-ESPNOW-CUSTOM-WIRELESS-PROTOCOL-GATE-F-GOLDEN-VECTORS-2026-05-26`, Gate F requirements-only runtime planning exists in `SRC-LOCAL-ESPNOW-CUSTOM-WIRELESS-PROTOCOL-GATE-F-RUNTIME-REQUIREMENTS-2026-05-26`, Gate M1 full-service mesh discovery host contract exists in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-2026-05-27`, Gate M2-A DOS-C companion bridge/operator support exists in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M2A-DOSC-2026-05-27`, Gate M3 design review exists in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M3-DESIGN-REVIEW-2026-06-05`, Gate M4 host adapter proof exists in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4-HOST-ADAPTER-2026-06-05`, Gate M4B build-only target proof exists in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4B-BUILD-ONLY-TARGET-2026-06-05`, Gate M4C firmware contract proof exists in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4C-FIRMWARE-CONTRACT-2026-06-05`, Gate M4D event queue contract proof exists in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4D-EVENT-QUEUE-CONTRACT-2026-06-05`, Gate M4E ownership contract proof exists in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4E-RUNTIME-TASK-OWNERSHIP-CONTRACT-2026-06-05`, Gate M4F dispatch-plan contract proof exists in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4F-DISPATCH-PLAN-CONTRACT-2026-06-05`, Gate M4G scheduler integration contract proof exists in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4G-SCHEDULER-INTEGRATION-CONTRACT-2026-06-05`, Gate M4H execution-accounting contract proof exists in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4H-EXECUTION-ACCOUNTING-CONTRACT-2026-06-05`, Gate M4I runtime-cycle contract proof exists in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4I-RUNTIME-CYCLE-CONTRACT-2026-06-05`, Gate M4J runtime scheduler design review is accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4J-RUNTIME-SCHEDULER-DESIGN-2026-06-06`, Gate M4K runtime scheduler source contract is accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4K-RUNTIME-SCHEDULER-SOURCE-CONTRACT-2026-06-06`, Gate M4L static task shell source is accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4L-STATIC-TASK-SHELL-SOURCE-CONTRACT-2026-06-06`, Gate M4M startup/lifecycle requirements are accepted as design-only in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4M-STARTUP-LIFECYCLE-REQUIREMENTS-2026-06-06`, Gate M4N startup lifecycle source is accepted with full validation and final 8/8 weighted post-review passed in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4N-STARTUP-LIFECYCLE-SOURCE-CONTRACT-2026-06-06`, Gate M4O no-flash app_main startup integration source is accepted with full validation and final 8/8 weighted post-review passed in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4O-APP-MAIN-STARTUP-INTEGRATION-2026-06-06`, Gate M4P bridge summary source is accepted with full validation and final 8/8 weighted post-review passed after resolved record-alignment P2 in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4P-BRIDGE-SUMMARY-SOURCE-CONTRACT-2026-06-06`, Gate M4Q local request-router accounting source is accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4Q-LOCAL-BRIDGE-REQUEST-ROUTER-SOURCE-CONTRACT-2026-06-06`, Gate M4R bridge-dispatch envelope accounting source is accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4R-BRIDGE-DISPATCH-ENVELOPE-SOURCE-CONTRACT-2026-06-06`, Gate M4S request-text intent accounting source is accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4S-BRIDGE-FRAME-INTENT-SOURCE-CONTRACT-2026-06-06`, Gate M4T volatile persistence-intent accounting source is accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4T-PERSISTENCE-INTENT-SOURCE-CONTRACT-2026-06-06`, Gate M4U design-only retained-persistence requirements are accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4U-RETAINED-PERSISTENCE-REQUIREMENTS-2026-06-06`, Gate M4V source-only retained-persistence adapter code is accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4V-RETAINED-PERSISTENCE-SOURCE-CONTRACT-2026-06-06`, Gate M4W source-only retained-recovery app_main integration is accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4W-RETAINED-RECOVERY-APP-MAIN-SOURCE-2026-06-06`, Gate M4X source-only bridge-readiness app_main integration is accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4X-BRIDGE-READINESS-APP-MAIN-SOURCE-2026-06-06`, Gate G simulator-only analytics exists in `SRC-LOCAL-ESPNOW-CUSTOM-WIRELESS-PROTOCOL-GATE-G-ANALYTICS-2026-05-25`, Gate G live export policy is accepted in `SRC-LOCAL-ESPNOW-GATE-G-LIVE-EXPORT-POLICY-2026-05-25`, Gate G local-admin redacted export implementation exists in `SRC-LOCAL-ESPNOW-GATE-G-LIVE-EXPORT-IMPLEMENTATION-2026-05-25`, Gate H live acceptance exists in `SRC-LOCAL-ESPNOW-CUSTOM-WIRELESS-PROTOCOL-GATE-H-LIVE-ACCEPTANCE-2026-05-25`, the structured transcript shape exists in `SRC-LOCAL-ESPNOW-GATE-H-STRUCTURED-TRANSCRIPT-2026-05-25`, and structured Gate H live acceptance exists in `SRC-LOCAL-ESPNOW-GATE-H-STRUCTURED-LIVE-ACCEPTANCE-2026-05-25`; future evidence is still required for live task execution proof, timer creation, firmware runtime implementation, firmware persistence, Win31 export controls, and any live bridge export request type. |
+| BBS UI system operation improvement program | UI-0 ranked improvement packet and M2-B host-only Network/Services source proof now exist under `SRC-LOCAL-BBS-UI-UI0-M2B-HOST-SLICE-2026-05-28`; M3 firmware mapping design review/fixtures now exist under `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M3-DESIGN-REVIEW-2026-06-05`, M4 host adapter proof exists under `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4-HOST-ADAPTER-2026-06-05`, M4B build-only target proof exists under `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4B-BUILD-ONLY-TARGET-2026-06-05`, M4C firmware contract proof exists under `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4C-FIRMWARE-CONTRACT-2026-06-05`, M4D event queue contract proof exists under `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4D-EVENT-QUEUE-CONTRACT-2026-06-05`, M4E ownership contract proof exists under `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4E-RUNTIME-TASK-OWNERSHIP-CONTRACT-2026-06-05`, M4F dispatch-plan contract proof exists under `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4F-DISPATCH-PLAN-CONTRACT-2026-06-05`, M4G scheduler integration contract proof exists under `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4G-SCHEDULER-INTEGRATION-CONTRACT-2026-06-05`, M4H execution-accounting contract proof exists under `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4H-EXECUTION-ACCOUNTING-CONTRACT-2026-06-05`, M4I runtime-cycle contract proof exists in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4I-RUNTIME-CYCLE-CONTRACT-2026-06-05`, M4J runtime scheduler design review is accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4J-RUNTIME-SCHEDULER-DESIGN-2026-06-06`, M4K runtime scheduler source contract is accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4K-RUNTIME-SCHEDULER-SOURCE-CONTRACT-2026-06-06`, M4L static task shell source is accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4L-STATIC-TASK-SHELL-SOURCE-CONTRACT-2026-06-06`, M4M design-only startup/lifecycle requirements are accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4M-STARTUP-LIFECYCLE-REQUIREMENTS-2026-06-06`, M4N startup lifecycle source is accepted with full validation and final 8/8 weighted post-review passed in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4N-STARTUP-LIFECYCLE-SOURCE-CONTRACT-2026-06-06`, M4O no-flash app_main startup integration source is accepted with full validation and final 8/8 weighted post-review passed in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4O-APP-MAIN-STARTUP-INTEGRATION-2026-06-06`, M4P bridge summary source is accepted with full validation and final 8/8 weighted post-review passed after resolved record-alignment P2 in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4P-BRIDGE-SUMMARY-SOURCE-CONTRACT-2026-06-06`, M4Q local request-router accounting source is accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4Q-LOCAL-BRIDGE-REQUEST-ROUTER-SOURCE-CONTRACT-2026-06-06`, M4R bridge-dispatch envelope accounting source is accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4R-BRIDGE-DISPATCH-ENVELOPE-SOURCE-CONTRACT-2026-06-06`, M4S request-text intent accounting source is accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4S-BRIDGE-FRAME-INTENT-SOURCE-CONTRACT-2026-06-06`, M4T volatile persistence-intent accounting source is accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4T-PERSISTENCE-INTENT-SOURCE-CONTRACT-2026-06-06`, M4U design-only retained-persistence requirements are accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4U-RETAINED-PERSISTENCE-REQUIREMENTS-2026-06-06`, M4V source-only retained-persistence adapter code is accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4V-RETAINED-PERSISTENCE-SOURCE-CONTRACT-2026-06-06`, M4W source-only retained-recovery app_main integration is accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4W-RETAINED-RECOVERY-APP-MAIN-SOURCE-2026-06-06`, M4X source-only bridge-readiness app_main integration is accepted in `SRC-LOCAL-ESPNOW-FULL-SERVICE-MESH-DISCOVERY-GATE-M4X-BRIDGE-READINESS-APP-MAIN-SOURCE-2026-06-06`, Client-1 static/simulated browser proof exists under `SRC-LOCAL-BBS-UI-CLIENT1-STATIC-BROWSER-PROOF-2026-06-05`, and Task 0213 accepts metadata-only screenshot/CV corroboration over the ignored Task 0185 Client-1 evidence packet. Task 0215 records no current tracked Client-1 UI source drift beyond Task 0185/Task 0213. Future later UI source changes still need copied screenshot/OCR/CV corroboration; remaining gaps include separately gated live bridge dispatch, live NVS execution proof, reboot durability, runtime persistence proof, firmware runtime proof, first-flash proof, live mesh proof, future Client-2 Tier 3 selected-board read-only Wi-Fi proof with same-session identity, power/voltage/boot-pin/isolation, recovery, browser evidence, and cleanup, plus flash, serial writes, and release/publication authority. Dummy-output control needs a later explicit GPIO/fixture/no-load/no-relay/no-mains record. |
 | Development status review | Current canonical ledger `research/development-status-ledger.md` plus `SRC-LOCAL-ESPNOW-DEVELOPMENT-STATUS-REVIEW-2026-05-26`; use it to classify planned lanes and superseded blocked evidence without rewriting historical task records. |
-| Agricultural telemetry hardware profiles | Source-backed records for selected center-pivot controller, soil probes, SDI-12/Modbus adapter, GPS pivot positioning device, GPS asset tracker, power/voltage/isolation limits, connector pinout, protocol, calibration, units, and live-proof plan. |
-| Remote LCD XBee solar client private submodules | Seven private docs-only submodule repos exist under `submodules/hardware/`, but closure still requires exact vendor sources and physical inspection records for ESP32 board, 20x4 LCD/backpack, rotary encoder, 18650 cell, BMS/protection board, solar panel, charger/power path, XBee carrier, antenna, fuse/protection, and enclosure; include power, voltage, boot-pin, isolation, charge/current limit, pullup, and recovery notes before any bench action. |
-| Hardware rapid prototyping and CAD | Same-session printer/scanner inventory for K1, Kobra 2 Max, CR-30, and CR-Scan Lizard; K1 hardened-nozzle physical proof; ventilation/exposure record aligned with `SRC-NIOSH-SAFE-3D-PRINTING-2024-103`; filament SDS and dry-state/humidity records; material/printer calibration coupons; CR-30 belt adhesion and slicer-angle proof; CR-Scan Lizard scan-to-caliper/known-dimension validation; CAD source/export packet; and lane-specific measurement packets before any nontechnical build guide is treated as repeatable. |
-| Four-relay low-voltage fixture kit | Complete the internal workbook with printer identity, K1 hardened-nozzle proof if needed, filament SDS and dry-state/humidity records, ventilation controls, calibration coupon, board/relay/XBee/MicroSD/TFT/expander dimensions, cable-tie and label-zone review, public-bundle exclusion proof for workbook/CAD, and reviewer signoff before live print, fit, or repeatable guide acceptance. |
+| Planned development completion audit | Task 0233 and Task 0234 record a dated records/status cross-check under `SRC-LOCAL-PLANNED-DEVELOPMENT-COMPLETION-AUDIT-2026-06-07` and `SRC-LOCAL-PLANNED-DEVELOPMENT-COMPLETION-STATUS-ALIGNMENT-2026-06-07`. Closure still requires lane-specific source records, live evidence, hardware identity, or release authority wherever the current status ledger keeps those gaps open. |
+| XBee transmit status host parser | Task 0235 records accepted host-only typed parsing for decoded Digi XBee Extended Transmit Status `0x8B` under `SRC-LOCAL-XBEE-TRANSMIT-STATUS-HOST-PARSER-2026-06-07`; it closes only the local safe-core host parser gap for raw decoded `0x8B` field extraction. Current hardware identity, serial/Tier B, XCTU/XBee Studio, RF/range/throughput, API transmit-to-hardware, bridge dispatch, relay payloads, wiring, flash, release, and publication remain open. |
+| XBee transmit status label helpers | Task 0236 records accepted host-only label helpers for decoded Digi XBee Extended Transmit Status `0x8B` raw delivery and discovery status bytes under `SRC-LOCAL-XBEE-TRANSMIT-STATUS-LABEL-HELPERS-2026-06-07`; it closes only the local safe-core host diagnostic gap for source-listed labels. Current hardware identity, serial/Tier B, XCTU/XBee Studio, RF/range/throughput, `0x10` builder work, API transmit-frame generation, API transmit-to-hardware, bridge dispatch, relay payloads, wiring, flash, release, and publication remain open. |
+| XBee AT command status label helper | Task 0237 records accepted host-only label helper coverage for parsed Digi XBee Local AT Command Response `0x88` raw command-status bytes under `SRC-LOCAL-XBEE-AT-COMMAND-STATUS-LABEL-HELPER-2026-06-07`; it closes only the local safe-core host diagnostic gap for source-listed local `0x88` command-status labels. Current hardware identity, serial/Tier B, XCTU/XBee Studio, RF/range/throughput, `0x10` builder work, Transmit Request generation, API transmit-frame generation, API transmit-to-hardware, bridge dispatch, relay payloads, wiring, flash, release, and publication remain open. |
+| XBee Modem Status host parser | Task 0238 records accepted host-only parser and label coverage for decoded received Digi XBee Modem Status `0x8A` raw status bytes under `SRC-LOCAL-XBEE-MODEM-STATUS-HOST-PARSER-2026-06-07`; it closes only the local safe-core host diagnostic gap for source-listed `0x8A` status labels. Current hardware identity, serial/Tier B, XCTU/XBee Studio, RF/range/throughput, `0x10` builder work, Transmit Request generation, API transmit-frame generation, API transmit-to-hardware, bridge dispatch, relay payloads, wiring, flash, release, and publication remain open. |
+| XBee Receive Options helper | Task 0239 records accepted host-only diagnostic helpers for decoded received Digi XBee Receive Packet `0x90` raw `receive_options` bytes under `SRC-LOCAL-XBEE-RECEIVE-OPTIONS-HELPER-2026-06-07`; it closes only the local safe-core host diagnostic gap for source-listed `0x90` receive-options bits. Current hardware identity, serial/Tier B, XCTU/XBee Studio, RF/range/throughput, `0x10` builder work, Transmit Request generation, API transmit-frame generation, API transmit-to-hardware, bridge dispatch, relay payloads, wiring, flash, release, and publication remain open. |
+| XBee Route Information host parser | Task 0240 records accepted host-only parser and label coverage for decoded received Digi XBee Route Information `0x8D` raw fields under `SRC-LOCAL-XBEE-ROUTE-INFORMATION-HOST-PARSER-2026-06-07`; it closes only the local safe-core host parser gap for source-listed `0x8D` fields and source-event labels. Current hardware identity, serial/Tier B, XCTU/XBee Studio, RF/range/throughput, `0x10` builder work, Trace Routing request generation, NACK request generation, Transmit Request generation, API transmit-frame generation, API transmit-to-hardware, live route diagnostics, bridge dispatch, relay payloads, wiring, flash, release, and publication remain open. |
+| XBee Aggregate Addressing Update host parser | Task 0241 records accepted host-only parser coverage for decoded received Digi XBee Aggregate Addressing Update `0x8E` raw fields under `SRC-LOCAL-XBEE-AGGREGATE-ADDRESSING-UPDATE-HOST-PARSER-2026-06-07`; it closes only the local safe-core host parser gap for source-listed `0x8E` raw fields. Current hardware identity, serial/Tier B, XCTU/XBee Studio, RF/range/throughput, issuing `AG`, updating `DH`/`DL`, `0x10` builder work, Transmit Request generation, API transmit-frame generation, API transmit-to-hardware, live DigiMesh behavior, bridge dispatch, relay payloads, wiring, flash, release, and publication remain open. |
+| XBee Explicit Receive host parser | Task 0242 records accepted host-only parser coverage for decoded received Digi XBee Explicit Receive Indicator `0x91` raw fields under `SRC-LOCAL-XBEE-EXPLICIT-RECEIVE-HOST-PARSER-2026-06-07`; it closes only the local safe-core host parser gap for source-listed `0x91` raw fields. Current hardware identity, current `AO`, serial/Tier B, XCTU/XBee Studio, RF/range/throughput, changing `AO`, building `0x10` or `0x11` frames, Transmit Request generation, Explicit Addressing Command Request generation, API transmit-frame generation, API transmit-to-hardware, live `0x91` behavior, bridge dispatch, relay payloads, wiring, flash, release, and publication remain open. |
+| XBee Remote AT Response host parser | Task 0243 records accepted host-only parser coverage for already-decoded Digi XBee Remote AT Command Response `0x97` frame data under `SRC-LOCAL-XBEE-REMOTE-AT-RESPONSE-HOST-PARSER-2026-06-07`; it closes only the local safe-core host parser gap for source-listed `0x97` raw fields and remote status labels. Current hardware identity, serial/Tier B, XCTU/XBee Studio, RF/range/throughput, remote setting reads, Remote AT Command Request `0x17` generation, API transmit-frame generation, API transmit-to-hardware, live `0x97` behavior, bridge dispatch, relay payloads, wiring, flash, release, and publication remain open. |
+| Agricultural telemetry hardware profiles | Task 0226 records candidate telemetry class planning profiles and ADR-0011 accepts only taxonomy/protocol-family boundaries under `SRC-LOCAL-AGRICULTURAL-TELEMETRY-PROFILE-BOUNDARY-2026-06-07`; Task 0227 records the evidence-intake packet template under `SRC-LOCAL-AGRICULTURAL-TELEMETRY-EVIDENCE-INTAKE-2026-06-07`. Closure still requires filled source-backed records for exact local center-pivot controller, soil probes, SDI-12/Modbus/RS232/RS485/analog adapter, any GPS pivot positioning device, GPS asset tracker/service, power/voltage/isolation limits, connector pinout, protocol/API details, calibration, units, retention/redaction policy, and live-proof plan. |
+| Remote LCD XBee solar client private submodules | Seven private docs-only submodule repos exist under `submodules/hardware/`, current dirty worktree identity-intake packet files are present in all seven lanes, all seven packets have parent docs-only review/tracking records split across Task 0219 and Task 0220, and all seven now have submodule-local docs/records-only review packets under Task 0221. Closure still requires separately gated submodule commits, later parent-pin gates, exact vendor sources, and physical inspection records for ESP32 board, 20x4 LCD/backpack, rotary encoder, 18650 cell, BMS/protection board, solar panel, charger/power path, XBee carrier, antenna, fuse/protection, and enclosure; include power, voltage, boot-pin, isolation, charge/current limit, pullup, RF/privacy, and recovery notes before any bench action. |
+| Hardware rapid prototyping and CAD | Task 0211 adds an internal per-lane measurement packet register and Task 0222 records internal validation-status routing, but every physical packet remains open/not recorded. Still required: same-session printer/scanner inventory for K1, Kobra 2 Max, CR-30, and CR-Scan Lizard; K1 hardened-nozzle physical proof; ventilation/exposure record aligned with `SRC-NIOSH-SAFE-3D-PRINTING-2024-103`; filament SDS and dry-state/humidity records; material/printer calibration coupons; CR-30 belt adhesion and slicer-angle proof; CR-Scan Lizard scan-to-caliper/known-dimension validation; CAD source/export packet; lane-specific measurement values; and reviewer acceptance before any nontechnical build guide is treated as repeatable. |
+| Four-relay low-voltage fixture kit | Task 0211 adds an internal open measurement register for fixture dimensions and stop fields, and Task 0222 records internal structural/public-bundle exclusion status, but complete physical evidence is still required in the internal workbook/register: printer identity, K1 hardened-nozzle proof if needed, filament SDS and dry-state/humidity records, ventilation controls, calibration coupon, board/relay/XBee/MicroSD/TFT/expander dimensions, cable-tie and label-zone review, and reviewer signoff before live print, fit, electrical, hardware, or repeatable guide acceptance. |
 | Cross-project client UI live gate | Stage 1 static or simulated phone/laptop UI proof; Stage 2 selected-board Wi-Fi read-only proof with identity, power, voltage, boot-pin, isolation, recovery, browser screenshot, and cleanup evidence; Stage 3 exact dummy-output GPIO/fixture proof with no relay/load/mains path, sequence logs, all-off, safety-lock rejection, and observed dummy output. |
 | DOS-C Windows 3.1 TCP bridge | SLIRP acceptance record showing guest ICMP/TCP path to the Pi simulator and operator-console state proof, with generated screenshots and captures kept out of Git. |
 | DOSBox-X PCAP bridge | Pi identity record, wired `eth0` evidence, capability setup and restore evidence, redacted packet-flow proof, and rollback result. |

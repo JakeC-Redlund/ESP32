@@ -165,3 +165,10 @@ remains identity-open and bench-closed. Next gate: collect source-backed
 identity intake inside the private `rlxsc-*` submodules, prioritizing cell,
 BMS/protection, charger/power path, panel, fuse/protection, enclosure, and
 current-limit evidence before board/interface or XBee bench action.
+
+Supersession note, 2026-06-06: Task 0218 records that current dirty worktree
+`docs/identity-intake.md` packet files are present in all seven private
+`rlxsc-*` submodules. They are not accepted as committed submodule state,
+parent-pinned submodule state, selected hardware, exact identity closure,
+measurements, or bench readiness. Continue by completing, reviewing, tracking,
+and later parent-pinning those packets under submodule-local gates.

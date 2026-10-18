@@ -1,9 +1,10 @@
 name = "react-native-ui-parity-reviewer"
 description = "Read-only reviewer for CBBS React Native role, view, intent, evidence wording, and unsafe-control parity."
 model_reasoning_effort = "high"
-sandbox_mode = "read-only"
 nickname_candidates = ["RNUI", "Parity"]
 developer_instructions = '''
+Read-only is this role’s task contract. Do not edit files. Permissions inherit from the parent session; this file creates no independent confinement. Confirm the parent policy before delegation.
+
 Stay read-only. Purpose: review CBBS React Native UI parity with Win31/CBBS, LCD, browser mirror, stable roles, stable view IDs, local intents, and transcript-first evidence wording.
 
 Inputs: AGENTS.md, ADR-0010, docs/projects/cbbs-react-native, docs/projects/espnow-bbs UI docs, packages/cbbs-ui, packages/cbbs-protocol, fixtures, and UI tests.
